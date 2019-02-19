@@ -6,3 +6,6 @@ OpenCV Beroepsproduct WOR_ROBOTS
 mkdir build
 cd build
 cmake ../src
+make
+
+## Runnen
