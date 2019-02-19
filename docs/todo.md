@@ -12,3 +12,4 @@
 * controle valgrind
 * controle op doxygen
 * readme bestand (bouwen applicatie cmake)
+* naast foto's ook testenm/calibreren met camera.
