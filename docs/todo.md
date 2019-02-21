@@ -1,21 +1,21 @@
 #REQUIREMENTS
 
-* [ ] onderstaand op alle foto's
+* [ ] onderstaand op alle foto's 
   * [ ] onderstaand op foto 3
     * [x] herkennen kleuren
-    * [ ] opervlakte vormen
-    * [ ] x en y coordinaten middelpunt
+    * [ ] opervlakte vormen - zie vormen
+    * [ ] x en y coordinaten middelpunt - M
     * [ ] herkennen vormen (incl bestaat niet)
-      *  [ ] zichtbaar niet herkennen! DUIDELIJK
-      *  [ ] cirkels
-      *  [ ] halve cirkels
-      *  [ ] rechthoek
-      *  [ ] vierkant
-      *  [ ] driehoek 
+      *  [ ] zichtbaar niet herkennen! DUIDELIJK - M
+      *  [ ] cirkels - M
+      *  [ ] halve cirkels - V
+      *  [ ] rechthoek - V
+      *  [ ] vierkant - V
+      *  [ ] driehoek - V
     * [ ] tijd voor (KLOKTIKKEN zie std::clock)
       * [ ] niet herkennen
       * [ ] wel herkennen
-* [ ] uit een bestand lezen (batch fotos)
+* [ ] uit een bestand lezen (batch fotos) - M
   * [ ] spec uit bestand
     * [ ] per regel 1 spec
     * [ ] text na een "#"/"hekkie" is commentaar
@@ -23,7 +23,7 @@
     * [ ] oppervlakte
     * [ ] coordinaten
   * [ ] stdout printen volgens protocol casus
-* [ ] interactief (runtime)
+* [ ] interactief (runtime) - V
   * [ ] mbv toetsenbord
   * [ ] actief tot exit
   * [ ] specificatie "[vorm][whitespace][kleur]"
