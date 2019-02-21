@@ -38,6 +38,8 @@ cv::Mat ColourFilter::preserveColour(cv::Mat inputMat, Colour preservedColour)
         inRange(inputMat, WHITE_HIGH_COLOR_RANGE.colourLow, WHITE_HIGH_COLOR_RANGE.colourHigh, outputMat2);
         finalOutputMat = outputMat1 | outputMat2;
         break;
+    case WOOD:
+        inRange(inputMat, WOOD_COLOR_RANGE.colourLow, WOOD_COLOR_RANGE.colourHigh, finalOutputMat);
     }
     return finalOutputMat;
 }

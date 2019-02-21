@@ -53,7 +53,7 @@ cv::Mat ShapeFilter::preserveShape(cv::Mat inputMat, Shape preservedShape)
 cv::Mat ShapeFilter::findShape(cv::Mat inputMat, Shape preservedShape, uint8_t approxSize)
 {
 
-    // cv::blur(inputMat, inputMat, cv::Size(3, 3), cv::Point(-1, -1), 1);
+    cv::blur(inputMat, inputMat, cv::Size(3, 3), cv::Point(-1, -1), 1);
     cv::Mat_<int> kernel(5, 5);
     kernel << 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9;
     cv::morphologyEx(inputMat, inputMat, cv::MORPH_OPEN, kernel);
@@ -62,12 +62,18 @@ cv::Mat ShapeFilter::findShape(cv::Mat inputMat, Shape preservedShape, uint8_t a
     std::vector<cv::Vec4i> hierarchy;
     std::vector<std::vector<cv::Point>> rightContours;
     std::vector<cv::Point> approx;
-
+    float length1;
+    float length2;
+    float length3;
+    float length4;
     cv::findContours(inputMat, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+    cv::Mat tempImage;
+    cv::cvtColor(inputMat, tempImage, cv::COLOR_GRAY2BGR);
     for (int i = 0; i < contours.size(); ++i)
     {
         bool allAnglesAreStraight = true;
-        approxPolyDP(contours[i], approx, cv::arcLength(contours[i], true) * 0.02, true);
+        approxPolyDP(contours[i], approx, cv::arcLength(cv::Mat(contours[i]), true) * 0.05, true);
+        std::cout << approx.size() << std::endl;
         if (approx.size() == approxSize)
         {
             switch (preservedShape)
@@ -77,18 +83,31 @@ cv::Mat ShapeFilter::findShape(cv::Mat inputMat, Shape preservedShape, uint8_t a
                 for (int i = 0; i < 4; ++i)
                 {
                     float angle = calculateAngle(approx[(0 + i) % 4], approx[(1 + i) % 4], approx[(2 + i) % 4]);
-                    std::cout << angle << std::endl;
+
+                    std::cout << "Angle: " << angle;
                     if (angle > RIGHT_ANGLE + ANGLE_DEVIATION || angle < RIGHT_ANGLE - ANGLE_DEVIATION)
                     {
+                        std::cout << "Angle not straight!";
                         allAnglesAreStraight = false;
                         i = 5;
                     }
+                    std::cout << std::endl;
                 }
-                if (allAnglesAreStraight && preservedShape == SQUARE)
+                length1 = (float)calculateDistance(approx[0], approx[1]);
+                length2 = (float)calculateDistance(approx[1], approx[2]);
+                length3 = (float)calculateDistance(approx[2], approx[3]);
+                length4 = (float)calculateDistance(approx[3], approx[0]);
+                if (length1 > MINIMUM_LENGTH && length2 > MINIMUM_LENGTH && length3 > MINIMUM_LENGTH && length4 > MINIMUM_LENGTH)
                 {
-                    if (abs((float)calculateDistance(approx[0], approx[1]) - (float)calculateDistance(approx[1], approx[2])) < LENGTH_DEVIATION)
+                    if (allAnglesAreStraight && preservedShape == SQUARE)
                     {
-                        if (abs((float)calculateDistance(approx[2], approx[3]) - (float)calculateDistance(approx[3], approx[0])) < LENGTH_DEVIATION)
+                        std::cout << "Lengte: " << calculateDistance(approx[0], approx[1]) << std::endl;
+                        std::cout << "Lengte: " << calculateDistance(approx[1], approx[2]) << std::endl;
+                        std::cout << "Lengte: " << calculateDistance(approx[2], approx[3]) << std::endl;
+                        std::cout << "Lengte: " << calculateDistance(approx[3], approx[0]) << std::endl;
+                        std::cout << abs((float)calculateDistance(approx[0], approx[1]) - (float)calculateDistance(approx[1], approx[2])) << std::endl;
+                        std::cout << abs((float)calculateDistance(approx[2], approx[3]) - (float)calculateDistance(approx[3], approx[0])) << std::endl;
+                        if (abs(length1 - length2 < LENGTH_DEVIATION) || abs(length3 - length4 < LENGTH_DEVIATION))
                         {
                             float sidesLength = ((float)calculateDistance(approx[0], approx[1]) + (float)calculateDistance(approx[1], approx[2]) + (float)calculateDistance(approx[2], approx[3]) + (float)calculateDistance(approx[3], approx[0])) / 4;
                             float surface = pow(sidesLength, 2);
@@ -96,14 +115,14 @@ cv::Mat ShapeFilter::findShape(cv::Mat inputMat, Shape preservedShape, uint8_t a
                             rightContours.push_back(contours[i]);
                         }
                     }
-                }
-                else if (allAnglesAreStraight && preservedShape == RECTANGLE)
-                {
-                    float sides1Length = ((float)calculateDistance(approx[0], approx[1]) + (float)calculateDistance(approx[2], approx[3])) / 2;
-                    float sides2Length = ((float)calculateDistance(approx[1], approx[2]) + (float)calculateDistance(approx[3], approx[0])) / 2;
-                    float surface = sides1Length * sides2Length;
-                    std::cout << "Rectangle found at position: (" << approx[0].x << "-" << approx[0].y << ") (" << approx[1].x << "-" << approx[1].y << ") (" << approx[2].x << "-" << approx[2].y << ") (" << approx[3].x << "-" << approx[3].y << ") sides1 are: " << sides1Length << " pixels long and sides2 are: " << sides2Length << " pixels long it has a surface of: " << surface << " pixels" << std::endl;
-                    rightContours.push_back(contours[i]);
+                    else if (allAnglesAreStraight && preservedShape == RECTANGLE)
+                    {
+                        float sides1Length = ((float)calculateDistance(approx[0], approx[1]) + (float)calculateDistance(approx[2], approx[3])) / 2;
+                        float sides2Length = ((float)calculateDistance(approx[1], approx[2]) + (float)calculateDistance(approx[3], approx[0])) / 2;
+                        float surface = sides1Length * sides2Length;
+                        std::cout << "Rectangle found at position: (" << approx[0].x << "-" << approx[0].y << ") (" << approx[1].x << "-" << approx[1].y << ") (" << approx[2].x << "-" << approx[2].y << ") (" << approx[3].x << "-" << approx[3].y << ") sides1 are: " << sides1Length << " pixels long and sides2 are: " << sides2Length << " pixels long it has a surface of: " << surface << " pixels" << std::endl;
+                        rightContours.push_back(contours[i]);
+                    }
                 }
                 break;
 
@@ -113,9 +132,20 @@ cv::Mat ShapeFilter::findShape(cv::Mat inputMat, Shape preservedShape, uint8_t a
             }
         }
     }
-    cv::Mat tempImage;
-    cv::cvtColor(inputMat, tempImage, cv::COLOR_GRAY2BGR);
-    cv::drawContours(tempImage, rightContours, -1, cv::Scalar(0, 255, 0), 6);
+    for (int i = 0; i < rightContours.size(); ++i)
+    {
+        cv::RotatedRect rotated = cv::minAreaRect(rightContours[i]);
+        // We take the edges that OpenCV calculated for us
+        cv::Point2f vertices2f[4];
+        rotated.points(vertices2f);
+
+        // Convert them so we can use them in a fillConvexPoly
+        // cv::Point vertices[4];
+        for (int i = 0; i < 4; ++i)
+        {
+            cv::line(tempImage, vertices2f[i], vertices2f[(i + 1) % 4], cv::Scalar(0, 255, 0), 2);
+        }
+    }
     return tempImage;
 }
 

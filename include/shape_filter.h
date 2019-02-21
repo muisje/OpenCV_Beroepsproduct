@@ -3,10 +3,11 @@
 
 #include "shape.h"
 #include "opencv2/core.hpp"
-#define ANGLE_DEVIATION 2
+#define ANGLE_DEVIATION 10
 #define LENGTH_DEVIATION 5
 #define RIGHT_ANGLE 90
 #define STRAIGHT_ANGLE 180
+#define MINIMUM_LENGTH 20
 
 /**
  * @class ShapeFilter
