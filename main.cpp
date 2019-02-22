@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     ColourFilter cf = ColourFilter();
     ShapeFilter sf = ShapeFilter();
     cv::bilateralFilter(hsv, test1, een, twee, drie);
-    Mat finalImage = cf.preserveColour(test1, YELLOW);
+    Mat finalImage = cf.preserveColour(test1, RED);
     cv::bilateralFilter(finalImage, test2, een, twee, drie);
 
     Mat finalImage2 = sf.preserveShape(test2, RECTANGLE);

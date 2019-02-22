@@ -1,6 +1,8 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 
+#include "opencv2/core.hpp"
+
 ///Enum which represents the shape of a specification
 enum Shape
 {
