@@ -53,6 +53,7 @@ cv::Mat ShapeFilter::preserveShape(cv::Mat inputMat, Shape preservedShape)
         }
     }
     cv::cvtColor(inputMat, inputMat, cv::COLOR_GRAY2BGR);
+    std::cout << foundContours.size() << std::endl;
     cv::drawContours(inputMat, foundContours, -1, cv::Scalar(255, 0, 0), 6, 6);
     return inputMat;
 }
@@ -98,10 +99,15 @@ bool ShapeFilter::isShape(std::vector<cv::Point> contour, std::vector<cv::Point>
             std::cout << "Rectangle found at position: (" << approx[0].x << "-" << approx[0].y << ") (" << approx[1].x << "-" << approx[1].y << ") (" << approx[2].x << "-" << approx[2].y << ") (" << approx[3].x << "-" << approx[3].y << ") sides1 are: " << sides1Length << " pixels long and sides2 are: " << sides2Length << " pixels long it has a surface of: " << surface << " pixels" << std::endl;
             return true;
         }
-        else
+        else if (preservedShape == QUADRANGLE)
         {
+            std::cout << "asdf" << std::endl;
             return true;
         }
+    }
+    else
+    {
+        return false;
     }
 }
 
