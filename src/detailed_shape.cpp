@@ -1,12 +1,14 @@
 #include "../include/detailed_shape.h"
 #include <opencv/cv.hpp>
 #include <iostream>
-DetailedShape::DetailedShape(Shape shape, std::vector<cv::Point> contour, Colour colour){
-    cv::Moments mom = cv::moments(contour, false);
-	cv::Point center(mom.m10/mom.m00, mom.m01/mom.m00);
-    std::cout << "X: " << center.x << " y: " << center.y << std::endl;
+DetailedShape::DetailedShape(std::vector<cv::Point> contour, Specification specification):contour(contour), specification(specification)
+{
+    cv::Moments moment = cv::moments(contour, false);
+    middlepoint.x = int(moment.m10 / moment.m00);
+    middlepoint.y = int(moment.m01 / moment.m00);
+    surface = cv::contourArea(contour);
 }
 
-DetailedShape::~DetailedShape(){
-
+DetailedShape::~DetailedShape()
+{
 }
