@@ -5,7 +5,7 @@
 #include "colour.h"
 
 /**
- * @class Specification
+ * @struct Specification
  *
  * @brief Struct to store a specifications data in
  * 
@@ -17,11 +17,12 @@
  * 
  */
 
-struct Specification {
+struct Specification
+{
     Shape shape;
     Colour colour;
-} ;
+};
 
-
+Specification parseSpecification(char colour, char shape);
 
 #endif // SPECIFICATION_H

@@ -2,8 +2,8 @@
 #define DETAILEDSHAPE_H
 
 #include "opencv2/core.hpp"
-#include "../include/colour.h"
-#include "../include/shape.h"
+#include "../include/specification.h"
+
 /**
  * @class Shape
  *
@@ -16,16 +16,17 @@
  * @date 13-2-2019
  * 
  */
-class DetailedShape {
-    public:
-    DetailedShape(Shape shape, std::vector<cv::Point> contour, Colour colour);
-    ~DetailedShape();
-    private:
-    Shape shape;
-    std::vector<cv::Point> contour;
-    Colour colour;
-    cv::Point middlepoint;
-    double surface;
-} ;
+class DetailedShape
+{
+public:
+  DetailedShape(std::vector<cv::Point> contour, Specification specification);
+  ~DetailedShape();
+
+private:
+  std::vector<cv::Point> contour;
+  Specification specification;
+  cv::Point middlepoint;
+  double surface;
+};
 
 #endif // DETAILEDSHAPE_H
