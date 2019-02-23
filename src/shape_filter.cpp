@@ -13,6 +13,7 @@ ShapeFilter::~ShapeFilter()
 
 cv::Mat ShapeFilter::preserveShape(cv::Mat inputMat, Specification specification)
 {
+       
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
     cv::findContours(inputMat, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));

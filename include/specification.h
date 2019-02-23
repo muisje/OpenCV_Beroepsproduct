@@ -23,6 +23,13 @@ struct Specification
     Colour colour;
 };
 
+/**
+ * @brief Function to easily parse a specification
+ * 
+ * @param colour Character which will be "translated" to a Colour enum.
+ * @param shape  Character which will be "translated" to a Shape enum.
+ * @return Specification A specification will be returned. If the character was unkown the default return will be: RED,RECTANGLE
+ */
 Specification parseSpecification(char colour, char shape);
 
 #endif // SPECIFICATION_H
