@@ -1,4 +1,5 @@
 #include "../include/drawer.h"
+#include <vector>
 
 Drawer::Drawer()
 {
@@ -16,7 +17,7 @@ void Drawer::draw(cv::InputOutputArray image, std::vector<DetailedShape> detaile
     }
     for (auto shape : detailedShapes)
     {
-        // cv::drawContours(image, shape.contour, -1, cv::Scalar(0, 0, 0), 3, 3);
+        cv::drawContours(image, std::vector<std::vector<cv::Point> >(1, shape.contour), -1, cv::Scalar(0, 0, 0), 3, 3);
         cv::circle(image, shape.middlepoint, 1, cv::Scalar(0, 0, 0), 3); // center
         drawInfo(image, shape.middlepoint, shape.surface, 000);
     }
