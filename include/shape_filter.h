@@ -32,6 +32,37 @@ class ShapeFilter
 {
 
 public:
+
+  /**
+   * @brief 
+   * 
+   * @param approx 
+   * @param preservedShape 
+   * @return true 
+   * @return false 
+   */
+  static bool isShape(std::vector<cv::Point> approx, Shape preservedShape);
+
+  /**
+   * @brief This function returns wether the contour which is supplied is a half circle 
+   * 
+   * @param contour This is the contour which will be looked at to see wether it is a half circle or not.
+   * @return true True is being returned if the supplied contour is a half circle
+   * @return false False is being returned if the supplied contour is not a half circle
+   */
+  static bool isHalfCircle(std::vector<cv::Point> contour);
+
+  /**
+   * @brief This function will remove all contours which are of an insufficient surface.
+   * 
+   * @param inputMat Contours which are to small will be removed from this matrix.
+   * @param contours Contours which are in the given matrix.
+   * @return cv::Mat A matrix will be returned in which the contours which are of an insufficient surface are removed
+   */
+  static cv::Mat removeSmallContours(cv::Mat inputMat, std::vector<std::vector<cv::Point>> contours);
+  
+protected:
+private:
   /**
     * @brief Construct a new Shape Filter object
     * 
@@ -42,48 +73,6 @@ public:
     * 
     */
   ~ShapeFilter();
-
-  /**
-    * @brief This function will only preserve the given shape if one is in the given Matrix
-    * 
-    * @param inputMat The shape will be searched in this matrix.
-    * @param preservedShape The shape which will be searched for in the matrix.
-    * @return cv::Mat The image returned will have the given shape highlighted.
-    */
-  cv::Mat preserveShape(cv::Mat inputMat, Specification specification);
-
-protected:
-private:
-  std::vector<std::vector<cv::Point>> foundContours;
-  std::vector<DetailedShape> foundShape;
-
-  /**
-   * @brief 
-   * 
-   * @param approx 
-   * @param preservedShape 
-   * @return true 
-   * @return false 
-   */
-  bool isShape(std::vector<cv::Point> approx, Shape preservedShape);
-
-  /**
-   * @brief This function returns wether the contour which is supplied is a half circle 
-   * 
-   * @param contour This is the contour which will be looked at to see wether it is a half circle or not.
-   * @return true True is being returned if the supplied contour is a half circle
-   * @return false False is being returned if the supplied contour is not a half circle
-   */
-  bool isHalfCircle(std::vector<cv::Point> contour);
-  
-  /**
-   * @brief This function will remove all contours which are of an insufficient surface.
-   * 
-   * @param inputMat Contours which are to small will be removed from this matrix.
-   * @param contours Contours which are in the given matrix.
-   * @return cv::Mat A matrix will be returned in which the contours which are of an insufficient surface are removed
-   */
-  cv::Mat removeSmallContours(cv::Mat inputMat, std::vector<std::vector<cv::Point>> contours);
   
   /**
    * @brief Calculate the angle between 3 given points
@@ -95,7 +84,7 @@ private:
    * @param point3 Third point from which the angle will be calculated.
    * @return double The angle will be returned
    */
-  double calculateAngle(cv::Point point1, cv::Point point2, cv::Point point3);
+  static double calculateAngle(cv::Point point1, cv::Point point2, cv::Point point3);
   
   /**
    * @brief Calculate the distance between two points.
@@ -104,7 +93,7 @@ private:
    * @param point2 Second point from which the distance will be calculated.
    * @return double Distance between the two points will be calcaluated.
    */
-  double calculateDistance(cv::Point point1, cv::Point point2);
+  static double calculateDistance(cv::Point point1, cv::Point point2);
 };
 
 #endif //SHAPE_FILTER_H

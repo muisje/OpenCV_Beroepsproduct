@@ -21,8 +21,6 @@ class ColourFilter
 {
 
 public:
-  ColourFilter();
-  ~ColourFilter();
 
   /** @brief 
     *
@@ -39,9 +37,12 @@ public:
     * colours namely black and white. The white areas will be the places where the given colour
     *  was found. The black areas will
     */
-  cv::Mat preserveColour(cv::Mat inputMat, Colour preservedColour);
+  static cv::Mat preserveColour(cv::Mat inputMat, Colour preservedColour);
 
 protected:
+  ColourFilter();
+  ~ColourFilter();
+
 private:
 };
 

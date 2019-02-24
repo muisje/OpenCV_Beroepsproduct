@@ -11,55 +11,6 @@ ShapeFilter::~ShapeFilter()
 {
 }
 
-cv::Mat ShapeFilter::preserveShape(cv::Mat inputMat, Specification specification)
-{
-       
-    std::vector<std::vector<cv::Point>> contours;
-    std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(inputMat, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-    inputMat = removeSmallContours(inputMat, contours);
-    for (size_t i = 0; i < contours.size(); ++i)
-    {
-        std::vector<cv::Point> approx;
-        approxPolyDP(contours[i], approx, cv::arcLength(cv::Mat(contours[i]), true) * 0.05, true);
-        switch (specification.shape)
-        {
-        case RECTANGLE:
-        case SQUARE:
-        case QUADRANGLE:
-            if (approx.size() == 4)
-            {
-                if (isShape(approx, specification.shape))
-                {
-                    foundContours.push_back(contours[i]);
-                    foundShape.push_back(DetailedShape(contours[i], specification));
-                }
-            }
-            break;
-        case CIRCLE:
-            std::cout << "Not implemented" << std::endl;
-            break;
-        case TRIANGLE:
-            if (approx.size() == 3 && !isHalfCircle(contours[i])) // When an halfCircle is to small approxPolyDP in rare occasions only recognizes 3 "corners"
-            {
-                foundContours.push_back(contours[i]);
-                foundShape.push_back(DetailedShape(contours[i], specification));
-            }
-            break;
-        case HALF_CIRCLE:
-            if (isHalfCircle(contours[i]))
-            {
-                foundContours.push_back(contours[i]);
-                foundShape.push_back(DetailedShape(contours[i], specification));
-            }
-            break;
-        }
-    }
-    cv::cvtColor(inputMat, inputMat, cv::COLOR_GRAY2BGR);
-    cv::drawContours(inputMat, foundContours, -1, cv::Scalar(255, 0, 0), 6, 6);
-    return inputMat;
-}
-
 bool ShapeFilter::isShape(std::vector<cv::Point> approx, Shape preservedShape)
 {
     float length1, length2, length3, length4;

@@ -22,7 +22,7 @@ public:
   DetailedShape(std::vector<cv::Point> contour, Specification specification);
   ~DetailedShape();
 
-private:
+// private:
   std::vector<cv::Point> contour;
   Specification specification;
   cv::Point middlepoint;
