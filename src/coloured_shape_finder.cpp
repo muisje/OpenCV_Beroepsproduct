@@ -27,10 +27,6 @@ std::vector<DetailedShape> ColouredShapeFinder::find(cv::Mat image, Specificatio
 
     preservedImage = ShapeFilter::removeSmallContours(preservedImage, contours);
 
-        cv::namedWindow("Display filter", cv::WINDOW_AUTOSIZE);
-        // cv::resize(image, image, cv::Size(0, 0), 1, 1);
-
-        cv::imshow("Display fitler", preservedImage);
     for (size_t i = 0; i < contours.size(); ++i)
     {
         std::vector<cv::Point> approx;
