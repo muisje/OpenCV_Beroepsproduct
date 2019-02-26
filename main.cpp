@@ -7,11 +7,11 @@
 
 using namespace cv;
 
-bool interactive = false;
+bool interactive = true;
 
 int main(/*int argc, char **argv*/) // Warning unused parameter
 {
-    Mat image = imread("../testImages/testImage3.jpg", IMREAD_COLOR);
+    Mat image = imread("../testImages/webcam2.jpg", IMREAD_COLOR);
     std::string input;
     if (!image.data)
     {
@@ -19,10 +19,13 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
         return -1;
     }
 
+    namedWindow("Display Image", WINDOW_AUTOSIZE);
+    imshow("Display Image", image);
+
     if (!interactive)
     {
-        enum ::Shape shape = Shape::TRIANGLE;
-        enum ::Colour colour = Colour::RED;
+        enum ::Shape shape = Shape::CIRCLE;
+        enum ::Colour colour = Colour::BLUE;
 
         Specification spec;
         spec.shape = shape;
@@ -39,7 +42,6 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
             Drawer::draw(image, shapes);
         }
 
-        namedWindow("Display Image", WINDOW_AUTOSIZE);
         // cv::resize(image, image, cv::Size(0, 0), 1, 1);
 
         imshow("Display Image", image);
@@ -53,23 +55,27 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
             //"y h"
             // this will show you all yellow half circles
             //"b r" will show you all blue rectangles etc etc.
-
-
+            waitKey(30);
             std::getline(std::cin, input);
+            if (input == "exit")
+            {
+                return 0;
+            }
+            Mat image1 = image.clone();
+
             Specification specification = parseSpecification(input[0], input[2]);
-            
+
             if (specification.shape == Shape::CIRCLE)
             {
                 std::vector<cv::Vec3f> circles = ColouredShapeFinder::findCircles(image, specification.colour);
-                Drawer::draw(image, circles);
+                Drawer::draw(image1, circles);
             }
             else
             {
                 std::vector<DetailedShape> shapes = ColouredShapeFinder::find(image, specification);
-                Drawer::draw(image, shapes);
+                Drawer::draw(image1, shapes);
             }
-            namedWindow("Display Image", WINDOW_AUTOSIZE);
-            imshow("Display Image", image);
+            imshow("Display Image", image1);
 
             if (waitKey(30) >= 0)
             {

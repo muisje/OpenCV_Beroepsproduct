@@ -33,7 +33,7 @@ bool ShapeFilter::isShape(std::vector<cv::Point> approx, Shape preservedShape)
     {
         if (allAnglesAreStraight && preservedShape == SQUARE)
         {
-            if (abs(length1 - length2) < LENGTH_DEVIATION || abs(length3 - length4) < LENGTH_DEVIATION)
+            if (abs((length2 - length1) * 100) / length1 < LENGTH_DEVIATION || abs((length2 - length1) * 100) / length3 < LENGTH_DEVIATION)
             {
                 return true;
             }

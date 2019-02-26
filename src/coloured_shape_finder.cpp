@@ -1,7 +1,7 @@
 #include "../include/coloured_shape_finder.h"
 #include "../include/shape_filter.h"
 #include "../include/colour_filter.h"
-#include "opencv2/core.hpp"
+#include <opencv2/opencv.hpp>
 
 ColouredShapeFinder::ColouredShapeFinder()
 {
@@ -17,15 +17,33 @@ std::vector<DetailedShape> ColouredShapeFinder::find(cv::Mat image, Specificatio
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
 
+    cv::Mat hsvImage;
+    cvtColor(image, hsvImage, CV_BGR2HSV);
+    cv::Mat preservedImage = hsvImage.clone();
+    cv::Mat preservedImage2 = hsvImage.clone();
 
+    cv::bilateralFilter(hsvImage, preservedImage2, 5, 85, 85);
 
-    cv::Mat preservedImage;
-    cvtColor(image, preservedImage, CV_BGR2HSV); 
-    preservedImage = ColourFilter::preserveColour(preservedImage, specification.colour);
+    preservedImage2 = ColourFilter::preserveColour(preservedImage2, specification.colour);
+    cv::bilateralFilter(preservedImage2, preservedImage, 5, 85, 85);
 
+    /*
+    cv::Mat canny;
+    cv::Mat finalImage;
+
+    cv::Canny(image, canny, 50, 200);
+    cv::GaussianBlur(canny, canny, cv::Size(3, 3), 3, 3);                   // perfect for wood
+    cv::GaussianBlur(preservedImage, preservedImage, cv::Size(3, 3), 3, 3); // perfect for wood
+
+    cv::bitwise_and(canny, preservedImage, finalImage);
+    cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2 * 1 + 1, 2 * 1 + 1), cv::Point(-1, -1));
+    cv::morphologyEx(finalImage, finalImage, cv::MORPH_DILATE, element, cv::Point(-1, -1), 1);
+    imshow("final", finalImage);
+*/
     cv::findContours(preservedImage, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
     preservedImage = ShapeFilter::removeSmallContours(preservedImage, contours);
+    imshow("sdf", preservedImage);
 
     for (size_t i = 0; i < contours.size(); ++i)
     {
@@ -61,11 +79,10 @@ std::vector<DetailedShape> ColouredShapeFinder::find(cv::Mat image, Specificatio
             break;
         }
     }
-
     return detailedShapes;
 }
 
-std::vector<cv::Vec3f> ColouredShapeFinder::findCircles(cv::Mat image, enum::Colour colour)
+std::vector<cv::Vec3f> ColouredShapeFinder::findCircles(cv::Mat image, enum ::Colour colour)
 {
     cv::Mat dst_x = image.clone();
     cv::Mat dst_y = image.clone();
@@ -77,7 +94,7 @@ std::vector<cv::Vec3f> ColouredShapeFinder::findCircles(cv::Mat image, enum::Col
     cv::addWeighted(dst_x, 0.5, dst_y, 0.5, 0, dst_combined);
 
     cv::Mat hsv;
-    cvtColor(image, hsv, CV_BGR2HSV); 
+    cvtColor(image, hsv, CV_BGR2HSV);
     cv::Mat foundCircles = ColourFilter::preserveColour(hsv, colour);
     cvtColor(dst_combined, dst_combined, cv::COLOR_BGR2GRAY);
     subtract(foundCircles, dst_combined, foundCircles);
