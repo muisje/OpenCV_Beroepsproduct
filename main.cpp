@@ -11,7 +11,7 @@ bool interactive = true;
 
 int main(/*int argc, char **argv*/) // Warning unused parameter
 {
-    Mat image = imread("../testImages/webcam2.jpg", IMREAD_COLOR);
+    Mat image = imread("../testImages/testImage3.jpg", IMREAD_COLOR);
     std::string input;
     if (!image.data)
     {
