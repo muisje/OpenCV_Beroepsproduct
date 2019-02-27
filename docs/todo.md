@@ -28,6 +28,7 @@
   * [ ] actief tot exit
   * [ ] specificatie "[vorm][whitespace][kleur]"
     * [ ] uitschrijven "circle red"
+    * [ ] als het woord niet word herkend bestaat de vorm niet
 * [ ] Beschrijven: - samen (kan na deadline)
   * [ ] gebruikte algoritmes
 	* [ ] berekenbaarheid
