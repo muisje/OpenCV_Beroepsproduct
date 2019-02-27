@@ -40,10 +40,8 @@ std::vector<DetailedShape> ColouredShapeFinder::find(cv::Mat image, Specificatio
     cv::morphologyEx(finalImage, finalImage, cv::MORPH_DILATE, element, cv::Point(-1, -1), 1);
     imshow("final", finalImage);
 */
+    preservedImage = ShapeFilter::removeSmallContours(preservedImage);
     cv::findContours(preservedImage, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-
-    preservedImage = ShapeFilter::removeSmallContours(preservedImage, contours);
-    imshow("sdf", preservedImage);
 
     for (size_t i = 0; i < contours.size(); ++i)
     {
@@ -58,7 +56,11 @@ std::vector<DetailedShape> ColouredShapeFinder::find(cv::Mat image, Specificatio
             {
                 if (ShapeFilter::isShape(approx, specification.shape))
                 {
-                    detailedShapes.push_back(DetailedShape(contours[i], specification));
+                    DetailedShape shape = DetailedShape(contours[i], specification);
+                    if (shape.surface > 100)
+                    {
+                        detailedShapes.push_back(shape);
+                    }
                 }
             }
             break;
@@ -68,13 +70,21 @@ std::vector<DetailedShape> ColouredShapeFinder::find(cv::Mat image, Specificatio
         case TRIANGLE:
             if (approx.size() == 3 && !ShapeFilter::isHalfCircle(contours[i])) // When an halfCircle is to small approxPolyDP in rare occasions only recognizes 3 "corners"
             {
-                detailedShapes.push_back(DetailedShape(contours[i], specification));
+                DetailedShape shape = DetailedShape(contours[i], specification);
+                if (shape.surface > 100)
+                {
+                    detailedShapes.push_back(shape);
+                }
             }
             break;
         case HALF_CIRCLE:
             if (ShapeFilter::isHalfCircle(contours[i]))
             {
-                detailedShapes.push_back(DetailedShape(contours[i], specification));
+                DetailedShape shape = DetailedShape(contours[i], specification);
+                if (shape.surface > 100)
+                {
+                    detailedShapes.push_back(shape);
+                }
             }
             break;
         }

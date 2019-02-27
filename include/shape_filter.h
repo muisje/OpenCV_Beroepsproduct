@@ -6,13 +6,13 @@
 #include "../include/specification.h"
 #include "opencv2/core.hpp"
 #define ANGLE_DEVIATION 10
-#define LENGTH_DEVIATION 5
+#define LENGTH_DEVIATION 10
 #define RIGHT_ANGLE 90
 #define STRAIGHT_ANGLE 180
 #define MINIMUM_LENGTH 20
-#define MAXIMUM_DEVIATION 0.08
+#define MAXIMUM_DEVIATION 0.1
 #define CIRCUMFERENCE_DEVIATION 10
-#define MINIMUM_CONTOUR_SIZE 100
+#define MINIMUM_CONTOUR_SIZE 1000
 
 /**
  * @class ShapeFilter
@@ -59,7 +59,7 @@ public:
    * @param contours Contours which are in the given matrix.
    * @return cv::Mat A matrix will be returned in which the contours which are of an insufficient surface are removed
    */
-  static cv::Mat removeSmallContours(cv::Mat inputMat, std::vector<std::vector<cv::Point>> contours);
+  static cv::Mat removeSmallContours(cv::Mat inputMat);
   
 protected:
 private:

@@ -58,6 +58,8 @@ bool ShapeFilter::isHalfCircle(std::vector<cv::Point> contour)
     double area = cv::norm(corners[0] - corners[1]) * cv::norm(corners[1] - corners[2]);
     double contourArea = cv::contourArea(contour);
 
+    std::cout << contourArea / area << std::endl;
+    std::cout << M_PI / 4 << std::endl;
     if (contourArea / area > M_PI / 4 - MAXIMUM_DEVIATION && contourArea / area < M_PI / 4)
     {
         return true;
@@ -86,9 +88,13 @@ double ShapeFilter::calculateDistance(cv::Point point1, cv::Point point2)
     return sqrt(pow(point2.x - point1.x, 2) + pow(point2.y - point1.y, 2));
 }
 
-cv::Mat ShapeFilter::removeSmallContours(cv::Mat inputMat, std::vector<std::vector<cv::Point>> contours)
+cv::Mat ShapeFilter::removeSmallContours(cv::Mat inputMat)
 {
     std::vector<std::vector<cv::Point>> smallContours;
+    std::vector<DetailedShape> detailedShapes;
+    std::vector<std::vector<cv::Point>> contours;
+    std::vector<cv::Vec4i> hierarchy;
+    cv::findContours(inputMat, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
     for (size_t i = 0; i < contours.size(); ++i)
     {
@@ -98,5 +104,6 @@ cv::Mat ShapeFilter::removeSmallContours(cv::Mat inputMat, std::vector<std::vect
         }
     }
     cv::drawContours(inputMat, smallContours, -1, cv::Scalar(0, 0, 0), 6);
+    imshow("asdf ", inputMat);
     return inputMat;
 }

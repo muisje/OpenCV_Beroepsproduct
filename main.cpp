@@ -11,16 +11,13 @@ bool interactive = true;
 
 int main(/*int argc, char **argv*/) // Warning unused parameter
 {
-    Mat image = imread("../testImages/testImage3.jpg", IMREAD_COLOR);
+    Mat image = imread("../testImages/webcam2.jpg", IMREAD_COLOR);
     std::string input;
     if (!image.data)
     {
         printf("No image data \n");
         return -1;
     }
-
-    namedWindow("Display Image", WINDOW_AUTOSIZE);
-    imshow("Display Image", image);
 
     if (!interactive)
     {
@@ -43,7 +40,6 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
         }
 
         // cv::resize(image, image, cv::Size(0, 0), 1, 1);
-
         imshow("Display Image", image);
         waitKey(0);
     }
@@ -55,7 +51,7 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
             //"y h"
             // this will show you all yellow half circles
             //"b r" will show you all blue rectangles etc etc.
-            waitKey(30);
+            std::cout << "Enter: [colour][whitespace][shape]" << std::endl;
             std::getline(std::cin, input);
             if (input == "exit")
             {
@@ -75,11 +71,9 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
                 std::vector<DetailedShape> shapes = ColouredShapeFinder::find(image, specification);
                 Drawer::draw(image1, shapes);
             }
-            imshow("Display Image", image1);
 
-            if (waitKey(30) >= 0)
-            {
-            };
+            imshow("Display Image", image1);
+            waitKey(150);
         }
     }
 

@@ -15,9 +15,15 @@ void Drawer::draw(cv::InputOutputArray image, std::vector<DetailedShape> detaile
     {
         drawNotFound(image);
     }
+    std::cout << detailedShapes.size() << std::endl;
     for (auto shape : detailedShapes)
     {
-        cv::drawContours(image, std::vector<std::vector<cv::Point> >(1, shape.contour), -1, cv::Scalar(0, 0, 0), 3, 3);
+        cv::RotatedRect rect = cv::minAreaRect(shape.contour);
+        cv::Point2f vertices[4];
+        rect.points(vertices);
+        for (int i = 0; i < 4; i++)
+            line(image, vertices[i], vertices[(i + 1) % 4], cv::Scalar(0, 255, 0));
+        // cv::drawContours(image, std::vector<std::vector<cv::Point> >(1, contour), -1, cv::Scalar(255, 255, 0), 1, 1);
         cv::circle(image, shape.middlepoint, 1, cv::Scalar(0, 0, 0), 3); // center
         drawInfo(image, shape.middlepoint, shape.surface, 000);
     }
