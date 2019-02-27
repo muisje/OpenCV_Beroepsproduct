@@ -58,8 +58,8 @@ bool ShapeFilter::isHalfCircle(std::vector<cv::Point> contour)
     double area = cv::norm(corners[0] - corners[1]) * cv::norm(corners[1] - corners[2]);
     double contourArea = cv::contourArea(contour);
 
-    std::cout << contourArea / area << std::endl;
-    std::cout << M_PI / 4 << std::endl;
+    // std::cout << contourArea / area << std::endl;
+    // std::cout << M_PI / 4 << std::endl;
     if (contourArea / area > M_PI / 4 - MAXIMUM_DEVIATION && contourArea / area < M_PI / 4)
     {
         return true;

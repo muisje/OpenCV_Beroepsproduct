@@ -15,7 +15,7 @@ void Drawer::draw(cv::InputOutputArray image, std::vector<DetailedShape> detaile
     {
         drawNotFound(image);
     }
-    std::cout << detailedShapes.size() << std::endl;
+    // std::cout << detailedShapes.size() << std::endl;
     for (auto shape : detailedShapes)
     {
         cv::RotatedRect rect = cv::minAreaRect(shape.contour);
