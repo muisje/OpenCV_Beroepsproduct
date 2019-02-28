@@ -87,6 +87,9 @@ std::vector<DetailedShape> ColouredShapeFinder::find(cv::Mat image, Specificatio
                 }
             }
             break;
+        case UNKNOWN_SHAPE:
+            return detailedShapes;
+            break;
         }
     }
     return detailedShapes;

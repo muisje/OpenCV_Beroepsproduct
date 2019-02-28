@@ -1,7 +1,18 @@
 # OpenCV_Beroepsproduct
 OpenCV Beroepsproduct WOR_ROBOTS
 
-## Compile
+## Building on Linux
+
+### Build dependencies
+
+Make sure these are installed first:
+
+    cmake - sudo apt-get install cmake
+    opencv 3.2.0 and above
+    cppcheck 1.86 and above
+
+
+### Compile
 
 From root:
 
@@ -12,7 +23,7 @@ cmake ../src
 make
 ```
 
-## Runnen
+### Runnen
 
 **todo**
 

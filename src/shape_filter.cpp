@@ -13,7 +13,7 @@ ShapeFilter::~ShapeFilter()
 
 bool ShapeFilter::isShape(std::vector<cv::Point> approx, Shape preservedShape)
 {
-    float length1, length2, length3, length4;
+    std::vector<float> lengths;
     bool allAnglesAreStraight;
     for (int i = 0; i < 4; ++i)
     {
@@ -25,15 +25,20 @@ bool ShapeFilter::isShape(std::vector<cv::Point> approx, Shape preservedShape)
             i = 5;
         }
     }
-    length1 = (float)calculateDistance(approx[0], approx[1]);
-    length2 = (float)calculateDistance(approx[1], approx[2]);
-    length3 = (float)calculateDistance(approx[2], approx[3]);
-    length4 = (float)calculateDistance(approx[3], approx[0]);
-    if (length1 > MINIMUM_LENGTH && length2 > MINIMUM_LENGTH && length3 > MINIMUM_LENGTH && length4 > MINIMUM_LENGTH)
+
+    lengths.push_back((float)calculateDistance(approx[0], approx[1]));
+    lengths.push_back((float)calculateDistance(approx[1], approx[2]));
+    lengths.push_back((float)calculateDistance(approx[2], approx[3]));
+    lengths.push_back((float)calculateDistance(approx[3], approx[0]));
+    lengths.push_back((float)calculateDistance(approx[3], approx[1]));
+    lengths.push_back((float)calculateDistance(approx[2], approx[0]));
+    std::sort(lengths.begin(),lengths.end(),std::greater<float>());
+
+    if (lengths[lengths.size()-1] > MINIMUM_LENGTH)
     {
         if (allAnglesAreStraight && preservedShape == SQUARE)
         {
-            if (abs((length2 - length1) * 100) / length1 < LENGTH_DEVIATION || abs((length2 - length1) * 100) / length3 < LENGTH_DEVIATION)
+            if (abs((lengths[3] - lengths[2]) * 100) / lengths[2] < LENGTH_DEVIATION && abs((lengths[4] - lengths[3]) * 100) / lengths[4] < LENGTH_DEVIATION)
             {
                 return true;
             }
@@ -55,13 +60,21 @@ bool ShapeFilter::isHalfCircle(std::vector<cv::Point> contour)
     cv::RotatedRect rectangle = cv::minAreaRect(contour);
     cv::Point2f corners[4];
     rectangle.points(corners);
-    double area = cv::norm(corners[0] - corners[1]) * cv::norm(corners[1] - corners[2]);
+    double height = cv::norm(corners[0] - corners[1]);
+    double width = cv::norm(corners[1] - corners[2]);
+    double area = height * width;
     double contourArea = cv::contourArea(contour);
 
-    // std::cout << contourArea / area << std::endl;
-    // std::cout << M_PI / 4 << std::endl;
     if (contourArea / area > M_PI / 4 - MAXIMUM_DEVIATION && contourArea / area < M_PI / 4)
     {
+        //If the width and height of the minAreaRect is close to zero it is a square.
+        //Since the previous if statement is both true with circles as half circles
+        //circles need to be filtered out. If the contour is a circle the minAreaRect
+        //is a rectangle of which the height as length are close to eachother.
+        if (abs(height - width) < LENGTH_DEVIATION)
+        {
+            return false;
+        }
         return true;
     }
     else

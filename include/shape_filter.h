@@ -5,8 +5,8 @@
 #include "../include/colour.h"
 #include "../include/specification.h"
 #include "opencv2/core.hpp"
-#define ANGLE_DEVIATION 10
-#define LENGTH_DEVIATION 10
+#define ANGLE_DEVIATION 15
+#define LENGTH_DEVIATION 15
 #define RIGHT_ANGLE 90
 #define STRAIGHT_ANGLE 180
 #define MINIMUM_LENGTH 20

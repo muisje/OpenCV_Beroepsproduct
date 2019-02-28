@@ -7,7 +7,12 @@
 #include "include/coloured_shape_finder.h"
 #include "include/drawer.h"
 #include "include/specification.h"
+#include <sstream>
+#include <iterator>
 
+#include <atomic>
+#include <thread>
+#include <ctime>
 using namespace cv;
 
 bool interactive = false;
@@ -34,7 +39,6 @@ void detectAndDrawLive()
 
         specCopy = spec.load();
         if (specCopy.shape == Shape::CIRCLE)
-        {
             std::vector<cv::Vec3f> circles = ColouredShapeFinder::findCircles(image, specCopy.colour);
             Drawer::draw(image, circles);
         }
@@ -109,10 +113,5 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
         if (input == "exit")
         {
             exitProgram.store(true);
-        }
-        spec.store(parseSpecification(input[0], input[2]));
-    }
-    stream.join();
-
     return 0;
 }
