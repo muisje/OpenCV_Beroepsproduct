@@ -3,15 +3,15 @@
 * [ ] onderstaand op alle foto's 
   * [ ] onderstaand op foto 3
     * [x] herkennen kleuren
-    * [ ] opervlakte vormen - zie vormen
-    * [ ] x en y coordinaten middelpunt - M
+    * [x] opervlakte vormen - zie vormen 
+    * [x] x en y coordinaten middelpunt - M
     * [ ] herkennen vormen (incl bestaat niet)
-      *  [ ] zichtbaar niet herkennen! DUIDELIJK - M
+      *  [x] zichtbaar niet herkennen! DUIDELIJK - M
       *  [ ] cirkels - M
       *  [ ] halve cirkels - V
-      *  [ ] rechthoek - V
-      *  [ ] vierkant - V
-      *  [ ] driehoek - V
+      *  [x] rechthoek - V
+      *  [x] vierkant - V
+      *  [x] driehoek - V
     * [ ] tijd voor (KLOKTIKKEN zie std::clock)
       * [ ] niet herkennen
       * [ ] wel herkennen
@@ -24,18 +24,22 @@
     * [ ] coordinaten
   * [ ] stdout printen volgens protocol casus
 * [ ] interactief (runtime) - V
-  * [ ] mbv toetsenbord
+  * [x] mbv toetsenbord
   * [ ] actief tot exit
   * [ ] specificatie "[vorm][whitespace][kleur]"
-* [ ] Beschrijven:
+    * [ ] uitschrijven "circle red"
+    * [ ] als het woord niet word herkend bestaat de vorm niet
+* [ ] Beschrijven: - samen (kan na deadline)
   * [ ] gebruikte algoritmes
 	* [ ] berekenbaarheid
 	* [ ] complexiteit
-* [ ] calibratie webcam (middelware?)
-* [ ] compileren zonder errors en warnings
+* [ ] webcam - M
+  * [ ] calibratie webcam (middelware?) - samen
+* [ ] compileren zonder errors en warnings - M
 * [ ] Timing diagram
-* [ ] controle op cppcheck / codan
+* [ ] controle op cppcheck / codan 
+  * [ ] foutloos - M
 * [ ] controle valgrind
-* [ ] controle op doxygen
+* [ ] controle op doxygen - M
 * [x] readme bestand (bouwen applicatie cmake)
 * [ ] demonstratie
