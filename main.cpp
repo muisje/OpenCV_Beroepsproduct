@@ -1,3 +1,6 @@
+#include <thread>
+#include <atomic>
+
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
 
@@ -13,106 +16,124 @@
 using namespace cv;
 
 bool interactive = true;
-std::atomic<bool> programActive;
-Specification specification{UNKNOWN_SHAPE, UNKNOWN_COLOUR};
+bool live = true;
+std::atomic<bool> exitProgram(false);
+std::atomic<Specification> spec;
 
-void readSpecification(/*Specification specification, std::atomic<bool> programActive*/)
+void detectAndDrawLive()
 {
-    while (programActive)
+    //TODO take avg of multiple frames
+    VideoCapture cap;
+    if (!cap.open(0))
     {
-        std::cout << "Enter: [shape][whitespace][colour]" << std::endl;
-        std::string input;
+        // error?
+    }
+    Specification specCopy;
+    while (exitProgram.load() == false)
+    {
+        Mat image;
+        cap >> image;
+        if (image.empty())
+            break; // end of video stream
 
-        std::getline(std::cin, input);
-        if (input == "exit")
+        specCopy = spec.load();
+        if (specCopy.shape == Shape::CIRCLE)
         {
-            programActive = false;
+            std::vector<cv::Vec3f> circles = ColouredShapeFinder::findCircles(image, specCopy.colour);
+            Drawer::draw(image, circles, specCopy);
         }
         else
         {
-            std::istringstream iss(input);
-            std::vector<std::string> pieces;
-            if (pieces.size() >= 2)
-            {
-                std::copy(std::istream_iterator<std::string>(iss),
-                          std::istream_iterator<std::string>(), back_inserter(pieces));
-                specification = parseSpecification(pieces[0], pieces[1]);
-                if (specification.colour == UNKNOWN_COLOUR || specification.shape == UNKNOWN_SHAPE)
-                {
-                    std::cout << "Unknown colour or shape!" << std::endl;
-                }
-            }
-            else
-            {
-                std::cout << "Unknown colour or shape!" << std::endl;
-            }
+            std::vector<DetailedShape> shapes = ColouredShapeFinder::find(image, specCopy);
+            Drawer::draw(image, shapes, specCopy);
         }
+        namedWindow("Display Image", WINDOW_AUTOSIZE); // Create Window
+        imshow("Display Image", image);
+        waitKey(1);
+    }
+    cap.release();
+    cv::destroyWindow("Display Image");
+}
+
+void detectAndDrawStatic()
+{
+    Mat orginal = imread("../testImages/testImage8.jpg", IMREAD_COLOR);
+    Specification specCopy;
+    while (exitProgram.load() == false)
+    {
+        Mat image = orginal.clone();
+        specCopy = spec.load();
+        if (specCopy.shape == Shape::CIRCLE)
+        {
+            std::vector<cv::Vec3f> circles = ColouredShapeFinder::findCircles(image, specCopy.colour);
+            Drawer::draw(image, circles, specCopy);
+        }
+        else
+        {
+            std::vector<DetailedShape> shapes = ColouredShapeFinder::find(image, specCopy);
+            Drawer::draw(image, shapes, specCopy);
+        }
+        namedWindow("Display Image", WINDOW_AUTOSIZE); // Create Window
+        imshow("Display Image", image);
+        waitKey(150);
+    }
+}
+
+void detectAndDraw(bool live)
+{
+    if (live)
+    {
+        detectAndDrawLive();
+    }
+    else
+    {
+        detectAndDrawStatic();
     }
 }
 
 int main(/*int argc, char **argv*/) // Warning unused parameter
 {
-    programActive = true;
-    Specification previousSpecification = specification;
-    Mat image = imread("../testImages/webcam2.jpg", IMREAD_COLOR);
-    Mat image1;
-    if (!image.data)
-    {
-        printf("No image data \n");
-        return -1;
-    }
-
     if (!interactive)
     {
-        //     enum ::Shape shape = Shape::CIRCLE;
-        //     enum ::Colour colour = Colour::BLUE;
-
-        //     Specification spec;
-        //     spec.shape = shape;
-        //     spec.colour = colour;
-
-        //     if (shape == Shape::CIRCLE)
-        //     {
-        //         std::vector<cv::Vec3f> circles = ColouredShapeFinder::findCircles(image, spec.colour);
-        //         Drawer::draw(image, circles);
-        //     }
-        //     else
-        //     {
-        //         std::vector<DetailedShape> shapes = ColouredShapeFinder::find(image, spec);
-        //         Drawer::draw(image, shapes);
-        //     }
-
-        //     // cv::resize(image, image, cv::Size(0, 0), 1, 1);
-        //     imshow("Display Image", image);
-        //     waitKey(0);
+        Specification staticSpec;
+        staticSpec.colour = Colour::BLUE;
+        staticSpec.shape = Shape::RECTANGLE;
+        spec.store(staticSpec);
     }
-    else
-    {
-        std::thread t1(readSpecification);
-        t1.detach();
-        while (programActive)
-        {
-            if (previousSpecification != specification)
-            {
-                previousSpecification = specification;
-                image1 = image.clone();
 
-                if (specification.shape == Shape::CIRCLE)
-                {
-                    std::vector<cv::Vec3f> circles = ColouredShapeFinder::findCircles(image, specification.colour);
-                    Drawer::draw(image1, circles, specification);
-                }
-                else
-                {
-                    std::vector<DetailedShape> shapes = ColouredShapeFinder::find(image, specification);
-                    Drawer::draw(image1, shapes, specification);
-                }
-                imshow("Display Image", image1);
-                waitKey(150);
+    std::thread stream(detectAndDraw, live);
+
+    while (!exitProgram.load())
+    {
+        std::cout << "Enter: [colour][whitespace][shape]" << std::endl;
+        std::string input;
+
+        std::getline(std::cin, input);
+        if (input == "exit")
+        {
+            exitProgram.store(true);
+        }
+        std::istringstream iss(input);
+        std::string shape;
+        std::string colour;
+        std::vector<std::string> pieces;
+
+        std::copy(std::istream_iterator<std::string>(iss),
+                  std::istream_iterator<std::string>(), back_inserter(pieces));
+        if (pieces.size() >= 2)
+        {
+            Specification tempSpec;
+            tempSpec = parseSpecification(pieces[0], pieces[1]);
+            spec.store(tempSpec);
+            if (tempSpec.colour == UNKNOWN_COLOUR || tempSpec.shape == UNKNOWN_SHAPE)
+            {
+                std::cout << "Unknown colour or shape!" << std::endl;
             }
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+        else
+        {
+            std::cout << "Unknown colour or shape!" << std::endl;
         }
     }
-    std::cout << "Shutting down" << std::endl;
     return 0;
 }

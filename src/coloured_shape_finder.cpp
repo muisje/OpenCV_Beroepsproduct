@@ -117,9 +117,6 @@ std::vector<cv::Vec3f> ColouredShapeFinder::findCircles(cv::Mat image, enum ::Co
     // cv::GaussianBlur(foundCircles, foundCircles, cv::Size(5, 5), 3, 3); // perfect for yellow
 
     std::vector<cv::Vec3f> circles;
-    cv::Mat end;
-    threshold( foundCircles, end, 10,255,cv::THRESH_BINARY );
-    imshow("asdffdsa", end);
     cv::HoughCircles(foundCircles, circles, CV_HOUGH_GRADIENT, 1, foundCircles.rows / 8, 100, 30, 15, 100);
     return circles;
 }
