@@ -9,6 +9,7 @@ Make sure these are installed first:
 
     cmake - sudo apt-get install cmake
     opencv 3.2.0 and above
+    cppcheck 1.86 and above
 
 
 ### Compile
