@@ -4,6 +4,9 @@
 #include "include/coloured_shape_finder.h"
 #include "include/drawer.h"
 #include "include/specification.h"
+#include <sstream>
+#include <iterator>
+
 #include <atomic>
 #include <thread>
 #include <ctime>
@@ -25,11 +28,22 @@ void readSpecification(/*Specification specification, std::atomic<bool> programA
         {
             programActive = false;
         }
-
-        specification = parseSpecification(input[0], input[2]);
-        if (specification.colour == UNKNOWN_COLOUR || specification.shape == UNKNOWN_SHAPE)
+        else
         {
-            std::cout << "Unknown colour or shape!" << std::endl;
+            std::istringstream iss(input);
+            std::string shape;
+            std::string colour;
+            std::vector<std::string> pieces;
+            std::copy(std::istream_iterator<std::string>(iss),
+                      std::istream_iterator<std::string>(), back_inserter(pieces));
+            for(auto piece: pieces){
+                std::cout << piece << std::endl;
+            }
+            specification = parseSpecification(pieces[0], pieces[1]);
+            if (specification.colour == UNKNOWN_COLOUR || specification.shape == UNKNOWN_SHAPE)
+            {
+                std::cout << "Unknown colour or shape!" << std::endl;
+            }
         }
     }
 }

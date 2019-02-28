@@ -31,7 +31,7 @@ bool operator!=(const Specification& lhs, const Specification& rhs);
  * @param shape  Character which will be "translated" to a Shape enum.
  * @return Specification A specification will be returned. If the character was unkown the default return will be: RED,RECTANGLE
  */
-Specification parseSpecification(char colour, char shape);
+Specification parseSpecification(std::string& colour, std::string& shape);
 
 // void readSpecification(Specification specification, std::atomic<bool> programActive);
 #endif // SPECIFICATION_H
