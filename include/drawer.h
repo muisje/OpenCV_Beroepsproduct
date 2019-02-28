@@ -3,6 +3,10 @@
 
 #include "detailed_shape.h"
 #include <opencv2/opencv.hpp>
+#define TEXT_RED 0
+#define TEXT_GREEN 255
+#define TEXT_BLUE 120
+
 
 class Drawer
 {

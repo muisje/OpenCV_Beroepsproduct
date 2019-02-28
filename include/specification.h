@@ -3,7 +3,6 @@
 
 #include "shape.h"
 #include "colour.h"
-
 /**
  * @struct Specification
  *
@@ -17,12 +16,14 @@
  * 
  */
 
+
 struct Specification
 {
     Shape shape;
     Colour colour;
 };
 
+bool operator!=(const Specification& lhs, const Specification& rhs);
 /**
  * @brief Function to easily parse a specification
  * 
@@ -32,4 +33,5 @@ struct Specification
  */
 Specification parseSpecification(char colour, char shape);
 
+// void readSpecification(Specification specification, std::atomic<bool> programActive);
 #endif // SPECIFICATION_H

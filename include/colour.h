@@ -4,9 +4,11 @@
 #include "colour_range.h"
 
 const ColourRange YELLOW_COLOR_RANGE     = {cv::Scalar(21,100,0),   cv::Scalar(40,255,255)}; // HLOW 20
-const ColourRange RED_LOW_COLOR_RANGE    = {cv::Scalar(0,61,0),    cv::Scalar(16,255,255)};
+const ColourRange RED_LOW_COLOR_RANGE    = {cv::Scalar(0,61,0),    cv::Scalar(12,255,255)};
 const ColourRange RED_HIGH_COLOR_RANGE   = {cv::Scalar(144,50,0),  cv::Scalar(180,255,255)};
-const ColourRange GREEN_COLOR_RANGE      = {cv::Scalar(25,45,24),   cv::Scalar(90,255,130)};
+const ColourRange GREEN_COLOR_RANGE_LOW  = {cv::Scalar(25,45,24),   cv::Scalar(90,255,130)};
+const ColourRange GREEN_COLOR_RANGE_HIGH = {cv::Scalar(50,45,24),   cv::Scalar(90,255,255)};
+
 const ColourRange BLUE_COLOR_RANGE       = {cv::Scalar(87,42,0),  cv::Scalar(151,255,255)};
 const ColourRange BLACK_LOW_COLOR_RANGE  = {cv::Scalar(0,0,0),      cv::Scalar(180,255,50)};
 const ColourRange BLACK_HIGH_COLOR_RANGE = {cv::Scalar(0,205,0),    cv::Scalar(180,255,58)};
@@ -26,7 +28,8 @@ enum Colour
     YELLOW,
     BLACK,
     WHITE,
-    WOOD
+    WOOD,
+    UNKNOWN_COLOUR
 };
 
 

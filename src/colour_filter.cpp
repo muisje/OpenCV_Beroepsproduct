@@ -23,7 +23,9 @@ cv::Mat ColourFilter::preserveColour(cv::Mat inputMat, Colour preservedColour)
         inRange(inputMat, YELLOW_COLOR_RANGE.colourLow, YELLOW_COLOR_RANGE.colourHigh, finalOutputMat);
         break;
     case GREEN:
-        inRange(inputMat, GREEN_COLOR_RANGE.colourLow, GREEN_COLOR_RANGE.colourHigh, finalOutputMat);
+        inRange(inputMat, GREEN_COLOR_RANGE_LOW.colourLow, GREEN_COLOR_RANGE_LOW.colourHigh, outputMat1);
+        inRange(inputMat, GREEN_COLOR_RANGE_HIGH.colourLow, GREEN_COLOR_RANGE_HIGH.colourHigh, outputMat2);
+        finalOutputMat = outputMat1 | outputMat2;
         break;
     case BLUE:
         inRange(inputMat, BLUE_COLOR_RANGE.colourLow, BLUE_COLOR_RANGE.colourHigh, finalOutputMat);
@@ -40,6 +42,10 @@ cv::Mat ColourFilter::preserveColour(cv::Mat inputMat, Colour preservedColour)
         break;
     case WOOD:
         inRange(inputMat, WOOD_COLOR_RANGE.colourLow, WOOD_COLOR_RANGE.colourHigh, finalOutputMat);
+        break;
+    case UNKNOWN_COLOUR:
+        inRange(inputMat, cv::Scalar(0, 0, 0), cv::Scalar(0, 0, 0), finalOutputMat);
+        break;
     }
     return finalOutputMat;
 }

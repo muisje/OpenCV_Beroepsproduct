@@ -27,7 +27,7 @@ Specification parseSpecification(char colour, char shape)
         finalShape = TRIANGLE;
         break;
     default:
-        finalShape = RECTANGLE;
+        finalShape = UNKNOWN_SHAPE;
         break;
     };
 
@@ -54,8 +54,14 @@ Specification parseSpecification(char colour, char shape)
         finalColour = WOOD;
         break;
     default:
-        finalColour = RED;
+        finalColour = UNKNOWN_COLOUR;
         break;
     };
     return Specification{finalShape, finalColour};
+}
+
+
+bool operator!=(const Specification& lhs, const Specification& rhs)
+{
+    return lhs.colour != rhs.colour || lhs.shape != rhs.shape;
 }

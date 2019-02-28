@@ -11,7 +11,8 @@ enum Shape
     QUADRANGLE,
     TRIANGLE,
     CIRCLE,
-    HALF_CIRCLE
+    HALF_CIRCLE,
+    UNKNOWN_SHAPE
 };
 
 
