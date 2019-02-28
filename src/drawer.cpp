@@ -9,11 +9,18 @@ Drawer::~Drawer()
 {
 }
 
-void Drawer::draw(cv::InputOutputArray image, std::vector<DetailedShape> detailedShapes)
+void Drawer::draw(cv::InputOutputArray image, std::vector<DetailedShape> detailedShapes, Specification specification)
 {
     if (detailedShapes.size() == 0)
     {
-        drawNotFound(image);
+        if (specification.shape == UNKNOWN_SHAPE || specification.colour == UNKNOWN_COLOUR)
+        {
+            drawText(image, "Unknown input");
+        }
+        else
+        {
+            drawText(image, "Not Found");
+        }
     }
     for (auto shape : detailedShapes)
     {
@@ -21,18 +28,25 @@ void Drawer::draw(cv::InputOutputArray image, std::vector<DetailedShape> detaile
         cv::Point2f vertices[4];
         rect.points(vertices);
         for (int i = 0; i < 4; i++)
-            line(image, vertices[i], vertices[(i + 1) % 4], cv::Scalar(TEXT_RED,TEXT_GREEN,TEXT_BLUE));
+            line(image, vertices[i], vertices[(i + 1) % 4], cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE));
         // cv::drawContours(image, std::vector<std::vector<cv::Point> >(1, contour), -1, cv::Scalar(255, 255, 0), 1, 1);
         cv::circle(image, shape.middlepoint, 1, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), 3); // center
         drawInfo(image, shape.middlepoint, shape.surface, 000);
     }
 }
 
-void Drawer::draw(cv::InputOutputArray image, std::vector<cv::Vec3f> circles)
+void Drawer::draw(cv::InputOutputArray image, std::vector<cv::Vec3f> circles, Specification specification)
 {
     if (circles.size() == 0)
     {
-        drawNotFound(image);
+        if (specification.shape == UNKNOWN_SHAPE || specification.colour == UNKNOWN_COLOUR)
+        {
+            drawText(image, "Unknown input");
+        }
+        else
+        {
+            drawText(image, "Not Found");
+        }
     }
     else
     {
@@ -49,11 +63,10 @@ void Drawer::draw(cv::InputOutputArray image, std::vector<cv::Vec3f> circles)
     }
 }
 
-void Drawer::drawNotFound(cv::InputOutputArray image)
+void Drawer::drawText(cv::InputOutputArray image, std::string inputText)
 {
-    std::string textNotFound = "Not Found";
     std::string textTicks = "000 ms";
-    std::string text = textNotFound + " " + textTicks;
+    std::string text = inputText + " " + textTicks;
 
     cv::Size textSize = cv::getTextSize(text, CV_FONT_HERSHEY_PLAIN,
                                         4, 5, 0);

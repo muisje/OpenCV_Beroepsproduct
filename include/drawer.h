@@ -7,22 +7,19 @@
 #define TEXT_GREEN 255
 #define TEXT_BLUE 120
 
-
 class Drawer
 {
-private:
+  private:
     Drawer(/* args */);
     ~Drawer();
 
-    static void drawNotFound(cv::InputOutputArray image);
+    static void drawText(cv::InputOutputArray image, std::string inputText);
+
     static void drawInfo(cv::InputOutputArray image, cv::Point center, double area, double ticks, int yOffset = 0);
-    
-public:
-    static void draw(cv::InputOutputArray image, std::vector<DetailedShape> detailedShapes);
-    static void draw(cv::InputOutputArray image, std::vector<cv::Vec3f> circles);
 
+  public:
+    static void draw(cv::InputOutputArray image, std::vector<DetailedShape> detailedShapes, Specification specification);
+    static void draw(cv::InputOutputArray image, std::vector<cv::Vec3f> circles, Specification specification);
 };
-
-
 
 #endif

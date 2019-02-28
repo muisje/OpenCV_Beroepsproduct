@@ -20,7 +20,7 @@ void readSpecification(/*Specification specification, std::atomic<bool> programA
 {
     while (programActive)
     {
-        std::cout << "Enter: [colour][whitespace][shape]" << std::endl;
+        std::cout << "Enter: [shape][whitespace][colour]" << std::endl;
         std::string input;
 
         std::getline(std::cin, input);
@@ -31,16 +31,18 @@ void readSpecification(/*Specification specification, std::atomic<bool> programA
         else
         {
             std::istringstream iss(input);
-            std::string shape;
-            std::string colour;
             std::vector<std::string> pieces;
-            std::copy(std::istream_iterator<std::string>(iss),
-                      std::istream_iterator<std::string>(), back_inserter(pieces));
-            for(auto piece: pieces){
-                std::cout << piece << std::endl;
+            if (pieces.size() >= 2)
+            {
+                std::copy(std::istream_iterator<std::string>(iss),
+                          std::istream_iterator<std::string>(), back_inserter(pieces));
+                specification = parseSpecification(pieces[0], pieces[1]);
+                if (specification.colour == UNKNOWN_COLOUR || specification.shape == UNKNOWN_SHAPE)
+                {
+                    std::cout << "Unknown colour or shape!" << std::endl;
+                }
             }
-            specification = parseSpecification(pieces[0], pieces[1]);
-            if (specification.colour == UNKNOWN_COLOUR || specification.shape == UNKNOWN_SHAPE)
+            else
             {
                 std::cout << "Unknown colour or shape!" << std::endl;
             }
@@ -52,7 +54,7 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
 {
     programActive = true;
     Specification previousSpecification = specification;
-    Mat image = imread("../testImages/testImage8.jpg", IMREAD_COLOR);
+    Mat image = imread("../testImages/webcam2.jpg", IMREAD_COLOR);
     Mat image1;
     if (!image.data)
     {
@@ -90,36 +92,23 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
         t1.detach();
         while (programActive)
         {
-
-            //enter for example the following
-            //"y h"
-            // this will show you all yellow half circles
-            //"b r" will show you all blue rectangles etc etc.
             if (previousSpecification != specification)
             {
-                std::clock_t start;
-                double duration;
-
-                start = std::clock();
                 previousSpecification = specification;
                 image1 = image.clone();
 
                 if (specification.shape == Shape::CIRCLE)
                 {
                     std::vector<cv::Vec3f> circles = ColouredShapeFinder::findCircles(image, specification.colour);
-                    Drawer::draw(image1, circles);
+                    Drawer::draw(image1, circles, specification);
                 }
                 else
                 {
                     std::vector<DetailedShape> shapes = ColouredShapeFinder::find(image, specification);
-                    Drawer::draw(image1, shapes);
+                    Drawer::draw(image1, shapes, specification);
                 }
                 imshow("Display Image", image1);
                 waitKey(150);
-
-                duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
-
-                std::cout << "printf: " << duration << '\n';
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
