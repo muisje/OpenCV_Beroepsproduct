@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project( Beroepsproduct )
 set(CMAKE_CXX_CPPCHECK "cppcheck")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread") #Needed for threading
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -std=gnu++14 -std=c++14") #Needed for threading
 file(GLOB SOURCES
         include/*.h
         src/*.cpp

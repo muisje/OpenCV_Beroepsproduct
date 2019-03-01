@@ -28,6 +28,7 @@ Specification parseSpecification(std::string &shape, std::string &colour)
     }
     else
     {
+        std::cout << "Warning: " << shape << " does not exist!" << std::endl;
         finalShape = UNKNOWN_SHAPE;
     };
 
@@ -53,6 +54,7 @@ Specification parseSpecification(std::string &shape, std::string &colour)
     }
     else
     {
+        std::cout << "Warning: " << colour << " does not exist!" << std::endl;
         finalColour = UNKNOWN_COLOUR;
     }
     return Specification{finalShape, finalColour};

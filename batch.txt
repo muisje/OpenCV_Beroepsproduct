@@ -1,0 +1,34 @@
+rechthoek rood
+rechthoek groen
+rechthoek blauw
+rechthoek geel
+rechthoek zwart
+rechthoek wit
+rechthoek rood # volgende specs bestaan niet
+veelhoek paars
+rechthoek paars
+veelhoek rood
+vierkant rood # alle vierkanten
+vierkant groen
+vierkant blauw
+vierkant geel
+vierkant zwart
+vierkant wit
+driehoek rood # alle driehoeken
+driehoek groen
+driehoek blauw
+driehoek geel
+driehoek zwart
+driehoek wit
+cirkel rood # alle cirkels
+cirkel groen
+cirkel blauw
+cirkel geel
+cirkel zwart
+cirkel wit
+halve_cirkel rood # alle halve cirkels
+halve_cirkel groen
+halve_cirkel blauw
+halve_cirkel geel
+halve_cirkel zwart
+halve_cirkel wit

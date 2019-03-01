@@ -29,6 +29,7 @@ enum Colour
     BLACK,
     WHITE,
     WOOD,
+    NO_COLOUR,
     UNKNOWN_COLOUR
 };
 

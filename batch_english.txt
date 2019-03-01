@@ -1,0 +1,38 @@
+rectangle red
+rectangle green
+rectangle blue
+rectangle yellow
+rectangle black
+rectangle white
+rectangle wood#the following specs do not exist
+polygon purple
+rectangle purple
+polygon red
+square red # all squares
+square green
+square blue
+square yellow
+square black
+square white
+square wood
+triangle red # all triangles
+triangle green
+triangle blue
+triangle yellow
+triangle black
+triangle white
+triangle wood
+circle red # all circles
+circle green
+circle blue
+circle yellow
+circle black
+circle white
+circle wood
+half_circle red # all half circles
+half_circle green
+half_circle blue
+half_circle yellow
+half_circle black
+half_circle white
+half_circle wood
