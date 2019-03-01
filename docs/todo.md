@@ -5,35 +5,37 @@
     * [x] herkennen kleuren
     * [x] opervlakte vormen - zie vormen 
     * [x] x en y coordinaten middelpunt - M
-    * [ ] herkennen vormen (incl bestaat niet)
-      *  [x] zichtbaar niet herkennen! DUIDELIJK - M
-      *  [ ] cirkels - M
-      *  [ ] halve cirkels - V
-      *  [x] rechthoek - V
-      *  [x] vierkant - V
-      *  [x] driehoek - V
+    * [x] herkennen vormen (incl bestaat niet)
+    * [x] zichtbaar niet herkennen! DUIDELIJK - M
+      * [ ] cirkels - M
+      * [ ] halve cirkels - V
+      * [x] rechthoek - V
+      * [x] vierkant - V
+      * [x] driehoek - V
     * [ ] tijd voor (KLOKTIKKEN zie std::clock)
       * [ ] niet herkennen
       * [ ] wel herkennen
-* [ ] uit een bestand lezen (batch fotos) - M
-  * [ ] spec uit bestand
-    * [ ] per regel 1 spec
-    * [ ] text na een "#"/"hekkie" is commentaar
+* [x] uit een bestand lezen (batch fotos) - M
+  * [x] spec uit bestand
+    * [x] per regel 1 spec
+    * [x] text na een "#"/"hekkie" is commentaar
   * [ ] niet afbeelding laten zien wel de rest
-    * [ ] oppervlakte
-    * [ ] coordinaten
-  * [ ] stdout printen volgens protocol casus
+    * [x] oppervlakte
+    * [x] coordinaten
+  * [x] stdout printen volgens protocol casus
 * [ ] interactief (runtime) - V
   * [x] mbv toetsenbord
-  * [ ] actief tot exit
+  * [x] actief tot exit
   * [ ] specificatie "[vorm][whitespace][kleur]"
     * [ ] uitschrijven "circle red"
-    * [ ] als het woord niet word herkend bestaat de vorm niet
+    * [x] als het woord niet word herkend bestaat de vorm niet
+    * [ ] in het nederlands
 * [ ] Beschrijven: - samen (kan na deadline)
   * [ ] gebruikte algoritmes
-	* [ ] berekenbaarheid
-	* [ ] complexiteit
-* [ ] webcam - M
+    * [ ] berekenbaarheid
+    * [ ] complexiteit
+* [x] webcam - M
+  * [ ] evt meerdere frames gebruiken?
   * [ ] calibratie webcam (middelware?) - samen
 * [ ] compileren zonder errors en warnings - M
 * [ ] Timing diagram
