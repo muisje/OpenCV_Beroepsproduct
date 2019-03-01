@@ -33,5 +33,4 @@ bool operator!=(const Specification& lhs, const Specification& rhs);
  */
 Specification parseSpecification(std::string& colour, std::string& shape);
 
-// void readSpecification(Specification specification, std::atomic<bool> programActive);
 #endif // SPECIFICATION_H

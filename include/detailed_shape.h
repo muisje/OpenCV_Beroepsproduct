@@ -19,7 +19,15 @@
 class DetailedShape
 {
 public:
+/**
+ * @brief Construct a new Detailed Shape object
+ * 
+ */
   DetailedShape(std::vector<cv::Point> contour, Specification specification);
+  /**
+   * @brief Destroy the Detailed Shape object
+   * 
+   */
   ~DetailedShape();
 
 // private:

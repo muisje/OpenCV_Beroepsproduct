@@ -12,7 +12,7 @@
 using namespace cv;
 
 bool interactive = true;
-bool live = false;
+bool live = true;
 std::atomic<bool> exitProgram(false);
 std::atomic<Specification> spec;
 
@@ -43,7 +43,6 @@ void detectAndDrawLive()
             std::vector<DetailedShape> shapes = ColouredShapeFinder::find(image, specCopy);
             Drawer::draw(image, shapes, specCopy);
         }
-        namedWindow("Display Image", WINDOW_AUTOSIZE); // Create Window
         imshow("Display Image", image);
         waitKey(1);
     }
@@ -69,7 +68,6 @@ void detectAndDrawStatic()
             std::vector<DetailedShape> shapes = ColouredShapeFinder::find(image, specCopy);
             Drawer::draw(image, shapes, specCopy);
         }
-        namedWindow("Display Image", WINDOW_AUTOSIZE); // Create Window
         imshow("Display Image", image);
         waitKey(150);
     }
@@ -103,14 +101,12 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
         unkownSpec.shape = Shape::UNKNOWN_SHAPE;
         spec.store(unkownSpec);
     }
-    
 
     std::thread stream(detectAndDraw, live);
 
-    
     while (!exitProgram.load() && interactive)
     {
-        std::cout << "Enter: [colour][whitespace][shape]" << std::endl;
+        std::cout << "Enter: [shape][whitespace][colour]" << std::endl;
         std::string input;
 
         std::getline(std::cin, input);

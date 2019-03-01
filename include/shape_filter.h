@@ -41,7 +41,7 @@ public:
    * @return true 
    * @return false 
    */
-  static bool isShape(std::vector<cv::Point> approx, Shape preservedShape);
+  static bool isShape(const std::vector<cv::Point> approx, Shape preservedShape);
 
   /**
    * @brief This function returns wether the contour which is supplied is a half circle 

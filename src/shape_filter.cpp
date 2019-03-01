@@ -11,10 +11,10 @@ ShapeFilter::~ShapeFilter()
 {
 }
 
-bool ShapeFilter::isShape(std::vector<cv::Point> approx, Shape preservedShape)
+bool ShapeFilter::isShape(const std::vector<cv::Point> approx, Shape preservedShape)
 {
     std::vector<float> lengths;
-    bool allAnglesAreStraight;
+    bool allAnglesAreStraight = true;
     for (int i = 0; i < 4; ++i)
     {
         double angle = calculateAngle(approx[(0 + i) % 4], approx[(1 + i) % 4], approx[(2 + i) % 4]);
@@ -117,6 +117,5 @@ cv::Mat ShapeFilter::removeSmallContours(cv::Mat inputMat)
         }
     }
     cv::drawContours(inputMat, smallContours, -1, cv::Scalar(0, 0, 0), 6);
-    imshow("asdf ", inputMat);
     return inputMat;
 }
