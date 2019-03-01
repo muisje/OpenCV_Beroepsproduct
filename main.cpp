@@ -1,22 +1,18 @@
-#include <thread>
-#include <atomic>
-
-#include <stdio.h>
-#include <opencv2/opencv.hpp>
 
 #include "include/coloured_shape_finder.h"
 #include "include/drawer.h"
 #include "include/specification.h"
+#include <opencv2/opencv.hpp>
+#include <stdio.h>
 #include <sstream>
 #include <iterator>
-
 #include <atomic>
 #include <thread>
 #include <ctime>
 using namespace cv;
 
 bool interactive = true;
-bool live = true;
+bool live = false;
 std::atomic<bool> exitProgram(false);
 std::atomic<Specification> spec;
 
@@ -100,10 +96,19 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
         staticSpec.shape = Shape::RECTANGLE;
         spec.store(staticSpec);
     }
+    else
+    {
+        Specification unkownSpec;
+        unkownSpec.colour = Colour::UNKNOWN_COLOUR;
+        unkownSpec.shape = Shape::UNKNOWN_SHAPE;
+        spec.store(unkownSpec);
+    }
+    
 
     std::thread stream(detectAndDraw, live);
 
-    while (!exitProgram.load())
+    
+    while (!exitProgram.load() && interactive)
     {
         std::cout << "Enter: [colour][whitespace][shape]" << std::endl;
         std::string input;
@@ -135,5 +140,7 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
             std::cout << "Unknown colour or shape!" << std::endl;
         }
     }
+
+    stream.join();
     return 0;
 }
