@@ -40,7 +40,15 @@ public:
   static cv::Mat preserveColour(cv::Mat inputMat, Colour preservedColour);
 
 protected:
+  /**
+   * @brief Construct a new Colour Filter object
+   * 
+   */
   ColourFilter();
+  /**
+   * @brief Destroy the Colour Filter object
+   * 
+   */
   ~ColourFilter();
 
 private:

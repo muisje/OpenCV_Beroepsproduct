@@ -138,7 +138,7 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
     {
         while (!exitProgram.load())
         {
-            std::cout << "Enter: [colour][whitespace][shape]" << std::endl;
+            std::cout << "Enter: [shape][whitespace][colour]" << std::endl;
             std::string input;
 
             std::getline(std::cin, input);

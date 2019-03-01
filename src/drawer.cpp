@@ -52,8 +52,8 @@ void Drawer::draw(cv::InputOutputArray image, std::vector<cv::Vec3f> circles, Sp
     {
         for (size_t current_circle = 0; current_circle < circles.size(); ++current_circle)
         {
-            cv::Point center(std::round(circles[current_circle][0]), std::round(circles[current_circle][1]));
-            int radius = std::round(circles[current_circle][2]);
+            cv::Point center(static_cast<int>(std::round(circles[current_circle][0])), static_cast<int>(std::round(circles[current_circle][1])));
+            int radius = static_cast<int>(std::round(circles[current_circle][2]));
 
             double area = M_PI * pow(radius, 2);
             cv::circle(image, center, 1, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), 3);      // center

@@ -15,9 +15,6 @@ const ColourRange BLACK_HIGH_COLOR_RANGE = {cv::Scalar(0,205,0),    cv::Scalar(1
 const ColourRange WHITE_LOW_COLOR_RANGE  = {cv::Scalar(0,5,170),    cv::Scalar(180,100,255)};
 const ColourRange WHITE_HIGH_COLOR_RANGE = {cv::Scalar(0,35,170),   cv::Scalar(180,60,255)};
 const ColourRange WOOD_COLOR_RANGE       = {cv::Scalar(13,55,60), cv::Scalar(23,206,255)};
-// 8 24 50 55 67 169
-// 13 23 55 206 0 255
-
 
 ///Enum which represents the color of a specification
 enum Colour
