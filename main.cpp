@@ -1,4 +1,4 @@
-
+#include "include/language.h"
 #include "include/coloured_shape_finder.h"
 #include "include/drawer.h"
 #include "include/printer.h"
@@ -7,6 +7,7 @@
 #include <opencv2/opencv.hpp>
 #include <stdio.h>
 #include <sstream>
+#include <iostream>
 #include <iterator>
 #include <atomic>
 #include <thread>
@@ -17,12 +18,12 @@ using namespace std::literals::chrono_literals;
 
 enum SpecificationMode {INTERACTIVE, BATCH, PRE_DEFINED};
 
-SpecificationMode specMode = SpecificationMode::BATCH;
+Language language = Language::DUTCH;
+SpecificationMode specMode = SpecificationMode::INTERACTIVE;
 bool live = false;
 std::atomic<bool> exitProgram(false);
 std::atomic<bool> needToPrint(false);
 std::atomic<Specification> spec;
-
 
 void detectAndDrawOnce(cv::Mat image, uint wait = 1)
 {
@@ -56,7 +57,6 @@ void detectAndDrawOnce(cv::Mat image, uint wait = 1)
             {
                 Printer::print(shapes);
             }
-            std::cout << std::endl;
             needToPrint.store(false);
         }
         Drawer::draw(image, shapes, specCopy);
@@ -70,7 +70,7 @@ void detectAndDrawLive()
 {
     //TODO take avg of multiple frames
     VideoCapture cap;
-    if (!cap.open(0))
+    if (!cap.open(1))
     {
         std::cout << "ERROR: camera not connected!" << std::endl;
         std::cout << "INFO: press enter key to exit." << std::endl;
@@ -136,9 +136,22 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
     
     if (specMode == SpecificationMode::INTERACTIVE)
     {
+        switch (language)
+        {
+            case Language::ENGLISH:
+                std::cout << "Enter: [shape][whitespace][colour]" << std::endl;
+                break;
+
+            case Language::DUTCH:
+                std::cout << "Voer in: [vorm][whitespace][kleur]" << std::endl;
+                break;
+        
+            default:
+                std::cout << "Warning: unsupported language" << std::endl;
+                break;
+        }
         while (!exitProgram.load())
         {
-            std::cout << "Enter: [shape][whitespace][colour]" << std::endl;
             std::string input;
 
             std::getline(std::cin, input);
@@ -156,7 +169,10 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
             if (pieces.size() >= 2)
             {
                 Specification tempSpec;
-                tempSpec = parseSpecification(pieces[0], pieces[1]);
+    
+                std::string colour = toEnglish(toUpper(pieces[0]), language);
+                std::string shape = toEnglish(toUpper(pieces[1]), language);
+                tempSpec = parseSpecification(colour, shape);
                 spec.store(tempSpec);
                 if (tempSpec.colour == UNKNOWN_COLOUR || tempSpec.shape == UNKNOWN_SHAPE)
                 {

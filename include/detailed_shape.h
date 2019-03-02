@@ -1,3 +1,13 @@
+/**
+ * @file detailed_shape.h
+ * @author Martijn Vogelaar
+ * @brief class for storing detialed information about a shape
+ * @version 0.1
+ * @date 2019-03-02
+ * 
+ * @copyright Copyright (c) 2019
+ * 
+ */
 #ifndef DETAILEDSHAPE_H
 #define DETAILEDSHAPE_H
 
@@ -7,9 +17,9 @@
 /**
  * @class Shape
  *
- * @brief Struct to store properties of a shape in
+ * @brief Class to store properties of a shape in
  * 
- * This struct is meant to make it easier to store the properties of shapes which have been found in
+ * This class is meant to make it easier to store the properties of shapes which have been found in
  * 
  * @author Martijn Vogelaar
  * 

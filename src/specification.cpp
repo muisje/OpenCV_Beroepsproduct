@@ -1,63 +1,43 @@
 #include "../include/specification.h"
+#include <boost/assign/list_of.hpp> // for 'map_list_of()'
+#include <boost/assert.hpp> 
+#include <map>
 #include <iostream>
+
+const std::map<std::string, Shape> stringToShapeEnglish = boost::assign::list_of<std::pair<std::string, Shape> > 
+    ("RECTANGLE", Shape::RECTANGLE) ("TRIANGLE", Shape::TRIANGLE) ("HALF_CIRCLE", Shape::HALF_CIRCLE) 
+    ("SQUARE", Shape::SQUARE) ("CIRCLE", Shape::CIRCLE);
+
+const std::map<std::string, Colour> stringToColourEnglish = boost::assign::list_of<std::pair<std::string, Colour> >
+    ("RED", Colour::RED) ("GREEN", Colour::GREEN) ("BLUE", Colour::BLUE) ("YELLOW", Colour::YELLOW) 
+    ("WOOD", Colour::WOOD);
+
+Shape findShapeEnum(std::string &shape)
+{
+    auto iterator = stringToShapeEnglish.find(shape);
+    if (iterator == stringToShapeEnglish.end())
+    {
+        return Shape::UNKNOWN_SHAPE;
+    }
+    return iterator->second;
+}
+
+Colour findColourEnum(std::string &colour)
+{
+    auto iterator = stringToColourEnglish.find(colour);
+    if (iterator == stringToColourEnglish.end())
+    {
+        return Colour::UNKNOWN_COLOUR;
+    }
+    return iterator->second;
+}
+
 Specification parseSpecification(std::string &shape, std::string &colour)
 {
-    Shape finalShape;
-    Colour finalColour;
     std::transform(colour.begin(), colour.end(), colour.begin(), ::toupper);
     std::transform(shape.begin(), shape.end(), shape.begin(), ::toupper);
-    if (shape == "RECTANGLE")
-    {
-        finalShape = RECTANGLE;
-    }
-    else if (shape == "SQUARE")
-    {
-        finalShape = SQUARE;
-    }
-    else if (shape == "TRIANGLE")
-    {
-        finalShape = TRIANGLE;
-    }
-    else if (shape == "HALF_CIRCLE")
-    {
-        finalShape = HALF_CIRCLE;
-    }
-    else if (shape == "CIRCLE")
-    {
-        finalShape = CIRCLE;
-    }
-    else
-    {
-        std::cout << "Warning: " << shape << " does not exist!" << std::endl;
-        finalShape = UNKNOWN_SHAPE;
-    };
-
-    if (colour == "RED")
-    {
-        finalColour = RED;
-    }
-    else if (colour == "GREEN")
-    {
-        finalColour = GREEN;
-    }
-    else if (colour == "BLUE")
-    {
-        finalColour = BLUE;
-    }
-    else if (colour == "YELLOW")
-    {
-        finalColour = YELLOW;
-    }
-    else if (colour == "WOOD")
-    {
-        finalColour = WOOD;
-    }
-    else
-    {
-        std::cout << "Warning: " << colour << " does not exist!" << std::endl;
-        finalColour = UNKNOWN_COLOUR;
-    }
-    return Specification{finalShape, finalColour};
+    
+    return Specification{findShapeEnum(shape), findColourEnum(colour)};
 }
 
 bool operator!=(const Specification &lhs, const Specification &rhs)

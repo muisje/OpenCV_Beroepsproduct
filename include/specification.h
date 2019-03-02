@@ -1,3 +1,12 @@
+/**
+ * @file specification.h
+ * @author Maurits Muijsert (MPW.Muijsert@student.han.nl), Martijn Vogelaar
+ * @brief eases handling of specifications (shape and colour).  
+ * @version 0.2
+ * @date 2019-03-02
+ * 
+ */
+
 #ifndef SPECIFICATION_H
 #define SPECIFICATION_H
 

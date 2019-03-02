@@ -1,3 +1,12 @@
+/**
+ * @file colour.h
+ * @author Maurits Muijsert (MPW.Muijsert@student.han.nl), Martijn Vogelaar
+ * @brief the definition of colours
+ * @version 0.1
+ * @date 2019-03-02
+ * 
+ * 
+ */
 #ifndef COLOUR_H
 #define COLOUR_H
 

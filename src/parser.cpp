@@ -3,12 +3,11 @@
 
 #define DELIMITER "#"
 
-Parser::Parser(std::string filename)
+Parser::Parser(std::string filename, Language Language)
+    : language(language)
 {
     // std::ifstream temp(filename);
     file = new std::ifstream(filename);
-
-    // file = std::ifstream(file);
 }
 
 Parser::~Parser()
@@ -34,6 +33,9 @@ Specification Parser::nextSpecification()
         } 
         colour = colour.substr(0, colour.find(DELIMITER));    
         std::cout << shape << " " << colour << std::endl;
+
+        shape = toEnglish(toUpper(shape), language);
+        colour = toEnglish(toUpper(colour), language);
         return parseSpecification(shape, colour);
     }
 

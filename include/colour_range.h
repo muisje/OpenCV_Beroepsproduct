@@ -1,3 +1,13 @@
+/**
+ * @file colour_range.h
+ * @author Martijn vogelaar
+ * @brief storing the colour range
+ * @version 0.1
+ * @date 2019-03-02
+ * 
+ * @copyright Copyright (c) 2019
+ * 
+ */
 #ifndef COLOUR_RANGE_H
 #define COLOUR_RANGE_H
 

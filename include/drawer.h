@@ -1,3 +1,12 @@
+/**
+ * @file drawer.h
+ * @author Maurits Muijsert (MPW.Muijsert@student.han.nl), Martijn Vogelaar
+ * @brief class for drawing on images. 
+ * @version 0.2
+ * @date 2019-03-02
+ * 
+ */
+
 #ifndef DRAWER_H
 #define DRAWER_H
 
@@ -48,7 +57,7 @@ class Drawer
     static void draw(cv::InputOutputArray image, std::vector<DetailedShape> detailedShapes, Specification specification);
     
     /**
- * @brief Function which will handle the drawing of Detailed shapes
+     * @brief Function which will handle the drawing of Detailed shapes
      * 
      * @details The draw function will handle the drawing of detailed shapes. It will highlight the contour of the shape
      * and also draw information about each shape on the image.

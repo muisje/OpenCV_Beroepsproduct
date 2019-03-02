@@ -1,3 +1,11 @@
+/**
+ * @file colour_filter.h
+ * @author Martijn Vogelaar
+ * @brief filtering colours on a image.
+ * @version 0.1
+ * @date 2019-03-02
+ * 
+ */
 #ifndef COLOURFILTER_H
 #define COLOURFILTER_H
 

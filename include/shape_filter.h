@@ -1,3 +1,11 @@
+/**
+ * @file shape_filter.h
+ * @author Martijn vogelaar
+ * @brief utility for filtering shapes
+ * @version 0.1
+ * @date 2019-03-02
+ * 
+ */
 #ifndef SHAPE_FILTER_H
 #define SHAPE_FILTER_H
 
