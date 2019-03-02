@@ -12,6 +12,58 @@ const std::map<std::string, Colour> stringToColourEnglish = boost::assign::list_
     ("RED", Colour::RED) ("GREEN", Colour::GREEN) ("BLUE", Colour::BLUE) ("YELLOW", Colour::YELLOW) 
     ("WOOD", Colour::WOOD);
 
+std::map<Shape, std::string> shapeToStringEnglish;
+std::map<Colour, std::string> colourToStringEnglish;
+
+
+std::string shapeToString(enum::Shape shape)
+{
+    if (shapeToStringEnglish.size() != stringToShapeEnglish.size())
+    {
+        for(auto it = stringToShapeEnglish.begin(); it != stringToShapeEnglish.end(); it++)
+        {
+        shapeToStringEnglish[it->second] = it->first;
+        }
+    }
+    auto iterator = shapeToStringEnglish.find(shape);
+    if (iterator == shapeToStringEnglish.end())
+    {
+        return "UNKNOWN_SHAPE";
+    }
+    return iterator->second;
+}
+
+std::string colourToString(enum::Colour colour)
+{
+    if (colourToStringEnglish.size() != stringToColourEnglish.size())
+    {
+        for(auto it = stringToColourEnglish.begin(); it != stringToColourEnglish.end(); it++)
+        {
+        colourToStringEnglish[it->second] = it->first;
+        }
+    }
+    auto iterator = colourToStringEnglish.find(colour);
+    if (iterator == colourToStringEnglish.end())
+    {
+        return "UNKNOWN_COLOUR";
+    }
+    return iterator->second;
+}
+
+std::string specificationToString(Specification specification, Language language)
+{
+    std::string shape = shapeToString(specification.shape);
+    std::string colour = colourToString(specification.colour);
+
+    if (language == Language::DUTCH)
+    {
+        shape = toDutch(shape);
+        colour = toDutch(colour);
+    }
+
+    return shape + " " + colour;
+}
+
 Shape findShapeEnum(std::string &shape)
 {
     auto iterator = stringToShapeEnglish.find(shape);

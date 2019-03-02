@@ -6,7 +6,10 @@
 const std::map<std::string, std::string> dutchToEnglish = boost::assign::list_of<std::pair<std::string, std::string> >
     ("RECHTHOEK", "RECTANGLE") ("VIERKANT", "SQUARE") ("DRIEHOEK", "TRIANGLE") ("CIRKEL", "CIRCLE")
     ("HALVE_CIRKEL", "HALF_CIRCLE") 
-    ("ROOD", "RED") ("GROEN", "GREEN") ("BLAUW", "BLUE") ("GEEL", "YELLOW") ("ZWART", "BLACK") ("ZWART", "BLACK");
+    ("ROOD", "RED") ("GROEN", "GREEN") ("BLAUW", "BLUE") ("GEEL", "YELLOW") ("ZWART", "BLACK") ("ZWART", "BLACK")
+    ("ONBEKENDE_VORM", "UNKNOWN_SHAPE") ("ONBEKENDE_KLEUR", "UNKNOWN_COLOUR");
+
+std::map<std::string, std::string> englishToDutch;
 
 std::string toUpper(const std::string & string)
 {
@@ -28,3 +31,25 @@ std::string toEnglish(const std::string & word, enum::Language from)
     }
     return iterator->second;
 }
+
+std::string toDutch(const std::string & word, enum::Language from)
+{
+    if(from == Language::DUTCH)
+    {
+        return word;
+    }
+    if (englishToDutch.size() != dutchToEnglish.size())
+    {
+        for(auto it = dutchToEnglish.begin(); it != dutchToEnglish.end(); it++)
+        {
+        englishToDutch[it->second] = it->first;
+        }
+    }
+    auto iterator = englishToDutch.find(word);
+    if (iterator == englishToDutch.end())
+    {
+        return "";
+    }
+    return iterator->second;
+}
+

@@ -12,6 +12,8 @@
 
 #include "shape.h"
 #include "colour.h"
+#include "language.h"
+
 /**
  * @struct Specification
  *
@@ -41,5 +43,14 @@ bool operator!=(const Specification& lhs, const Specification& rhs);
  * @return Specification A specification will be returned. If the character was unkown the default return will be: RED,RECTANGLE
  */
 Specification parseSpecification(std::string& colour, std::string& shape);
+
+/**
+ * @brief get the specification data as a string. 
+ * 
+ * @param specification the specification that needs to be converted.
+ * @param language the language you want to be the specification represented in.
+ * @return std::string the result.
+ */
+std::string specificationToString(Specification specification, Language language = Language::ENGLISH);
 
 #endif // SPECIFICATION_H

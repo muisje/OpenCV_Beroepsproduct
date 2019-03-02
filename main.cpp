@@ -2,7 +2,7 @@
 #include "include/coloured_shape_finder.h"
 #include "include/drawer.h"
 #include "include/printer.h"
-#include "include/parser.h"
+#include "include/batch_parser.h"
 #include "include/specification.h"
 #include <opencv2/opencv.hpp>
 #include <stdio.h>
@@ -19,7 +19,7 @@ using namespace std::literals::chrono_literals;
 enum SpecificationMode {INTERACTIVE, BATCH, PRE_DEFINED};
 
 Language language = Language::DUTCH;
-SpecificationMode specMode = SpecificationMode::INTERACTIVE;
+SpecificationMode specMode = SpecificationMode::BATCH;
 bool live = false;
 std::atomic<bool> exitProgram(false);
 std::atomic<bool> needToPrint(false);
@@ -34,6 +34,7 @@ void detectAndDrawOnce(cv::Mat image, uint wait = 1)
         
         if (needToPrint.load())
         {
+            std::cout << specificationToString(specCopy, language) << std::endl;
             if (circles.size() == 0)
             {
                 Printer::printNotFound();
@@ -49,6 +50,7 @@ void detectAndDrawOnce(cv::Mat image, uint wait = 1)
 
         if (needToPrint.load())
         {
+            std::cout << specificationToString(specCopy, language) << std::endl;
             if (shapes.size() == 0)
             {
                 Printer::printNotFound();
@@ -190,7 +192,18 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
         {
             std::this_thread::sleep_for(2s); // Wait for camara to turn on
         }
-        Parser batch("../batch_english.txt");
+        std::string batchFile;
+        if (language == Language::DUTCH)
+        {
+            batchFile = "../batch.txt";
+        }
+        else
+        {
+            batchFile = "../batch_english.txt";
+        }
+        
+        BatchParser batch(batchFile, language);
+
         while (!exitProgram.load())
         {
             Specification currentSpec = batch.nextSpecification();

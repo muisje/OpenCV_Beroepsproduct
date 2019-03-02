@@ -1,22 +1,21 @@
-#include "../include/parser.h"
+#include "../include/batch_parser.h"
 #include <iostream>
 
 #define DELIMITER "#"
 
-Parser::Parser(std::string filename, Language Language)
-    : language(language)
+BatchParser::BatchParser(std::string filename, Language language)
 {
-    // std::ifstream temp(filename);
+    this->language = language;
     file = new std::ifstream(filename);
 }
 
-Parser::~Parser()
+BatchParser::~BatchParser()
 {
     file->close();
     delete file;
 }
 
-Specification Parser::nextSpecification()
+Specification BatchParser::nextSpecification()
 {
     if (file->is_open()) {
         std::string line;
@@ -32,8 +31,6 @@ Specification Parser::nextSpecification()
             return specification;
         } 
         colour = colour.substr(0, colour.find(DELIMITER));    
-        std::cout << shape << " " << colour << std::endl;
-
         shape = toEnglish(toUpper(shape), language);
         colour = toEnglish(toUpper(colour), language);
         return parseSpecification(shape, colour);
