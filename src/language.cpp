@@ -6,7 +6,7 @@
 const std::map<std::string, std::string> dutchToEnglish = boost::assign::list_of<std::pair<std::string, std::string> >
     ("RECHTHOEK", "RECTANGLE") ("VIERKANT", "SQUARE") ("DRIEHOEK", "TRIANGLE") ("CIRKEL", "CIRCLE")
     ("HALVE_CIRKEL", "HALF_CIRCLE") 
-    ("ROOD", "RED") ("GROEN", "GREEN") ("BLAUW", "BLUE") ("GEEL", "YELLOW") ("ZWART", "BLACK") ("ZWART", "BLACK");
+    ("ROOD", "RED") ("GROEN", "GREEN") ("BLAUW", "BLUE") ("GEEL", "YELLOW") ("ZWART", "BLACK") ("HOUT","WOOD");
 
 std::string toUpper(const std::string & string)
 {

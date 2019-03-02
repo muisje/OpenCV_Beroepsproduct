@@ -31,13 +31,13 @@ public:
      * 
      * @param circles to be printed
      */
-    static void print(std::vector<cv::Vec3f> circles);
+    static void print(std::vector<cv::Vec3f>& circles, std::clock_t duration);
     /**
      * @brief every other shape then circle to be printed to console
      * 
      * @param shapes to be printed
      */
-    static void print(std::vector<DetailedShape> shapes);
+    static void print(std::vector<DetailedShape>& shapes, std::clock_t duration);
 };
 
 #endif

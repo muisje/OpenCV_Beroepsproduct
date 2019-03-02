@@ -18,17 +18,17 @@
 
 class Drawer
 {
-  private:
-    Drawer(/* args */);
-    ~Drawer();
-    /**
+private:
+  Drawer(/* args */);
+  ~Drawer();
+  /**
      * @brief Function to easily draw text on a given input image
      * 
      * @param image Image on which the text will be drawn on.
      * @param inputText Text which will be drawn on the image.
      */
-    static void drawText(cv::InputOutputArray image, std::string inputText);
-    /**
+  static void drawText(cv::InputOutputArray image, std::string inputText);
+  /**
      * @brief Function which makes it easier to draw info about a DetailedShape
      * 
      * @details The drawInfo function makes it easier to display information about a shape on an image.
@@ -40,10 +40,10 @@ class Drawer
      * @param ticks Time it took to determine that the shape was here. THis will also be drawn on the image.
      * @param yOffset 
      */
-    static void drawInfo(cv::InputOutputArray image, cv::Point center, double area, double ticks, int yOffset = 0);
+  static void drawInfo(cv::InputOutputArray image, cv::Point center, double area, int yOffset = 0);
 
-  public:
-    /**
+public:
+  /**
      * @brief Function which will handle the drawing of Detailed shapes
      * 
      * @details The draw function will handle the drawing of detailed shapes. It will highlight the contour of the shape
@@ -54,9 +54,9 @@ class Drawer
      * @param specification The current specification is needed to determine wether no shape was found
      * because there was no shape or the input was incorrect.
      */
-    static void draw(cv::InputOutputArray image, std::vector<DetailedShape> detailedShapes, Specification specification);
-    
-    /**
+  static void draw(cv::InputOutputArray image, std::vector<DetailedShape> detailedShapes, Specification specification, std::clock_t duration);
+
+  /**
      * @brief Function which will handle the drawing of Detailed shapes
      * 
      * @details The draw function will handle the drawing of detailed shapes. It will highlight the contour of the shape
@@ -65,7 +65,11 @@ class Drawer
      * @param specification The current specification is needed to determine wether no shape was found
      * because there was no shape or the input was incorrect.
      */
-    static void draw(cv::InputOutputArray image, std::vector<cv::Vec3f> circles, Specification specification);
+  static void draw(cv::InputOutputArray image, std::vector<cv::Vec3f> circles, Specification specification, std::clock_t duration);
+
+  static void draw(cv::InputOutputArray image, Specification specification);
+
+  static void drawTime(cv::InputOutputArray image, std::clock_t duration);
 };
 
 #endif

@@ -16,11 +16,16 @@
 using namespace cv;
 using namespace std::literals::chrono_literals;
 
-enum SpecificationMode {INTERACTIVE, BATCH, PRE_DEFINED};
+enum SpecificationMode
+{
+    INTERACTIVE,
+    BATCH,
+    PRE_DEFINED
+};
 
 Language language = Language::DUTCH;
 SpecificationMode specMode = SpecificationMode::INTERACTIVE;
-bool live = false;
+bool live = true;
 std::atomic<bool> exitProgram(false);
 std::atomic<bool> needToPrint(false);
 std::atomic<Specification> spec;
@@ -30,22 +35,26 @@ void detectAndDrawOnce(cv::Mat image, uint wait = 1)
     Specification specCopy = spec.load();
     if (specCopy.shape == Shape::CIRCLE)
     {
+        std::clock_t startTime = std::clock();
         std::vector<cv::Vec3f> circles = ColouredShapeFinder::findCircles(image, specCopy.colour);
-        
+        std::clock_t endTime = std::clock();
         if (needToPrint.load())
         {
             if (circles.size() == 0)
             {
                 Printer::printNotFound();
             }
-            Printer::print(circles);
+            Printer::print(circles, endTime - startTime);
             needToPrint.store(false);
         }
-        Drawer::draw(image, circles, specCopy);
+        Drawer::draw(image, circles, specCopy, endTime - startTime);
     }
     else
     {
+        std::clock_t startTime = std::clock();
+
         std::vector<DetailedShape> shapes = ColouredShapeFinder::find(image, specCopy);
+        std::clock_t endTime = std::clock();
 
         if (needToPrint.load())
         {
@@ -55,15 +64,15 @@ void detectAndDrawOnce(cv::Mat image, uint wait = 1)
             }
             else
             {
-                Printer::print(shapes);
+                Printer::print(shapes, endTime - startTime);
             }
             needToPrint.store(false);
         }
-        Drawer::draw(image, shapes, specCopy);
+        Drawer::draw(image, shapes, specCopy, endTime - startTime);
     }
     namedWindow("Display Image", WINDOW_AUTOSIZE); // Create Window
     imshow("Display Image", image);
-    waitKey(wait);
+    waitKey(30);
 }
 
 void detectAndDrawLive()
@@ -91,7 +100,7 @@ void detectAndDrawLive()
 
 void detectAndDrawStatic()
 {
-    Mat orginal = imread("../testImages/testImage8.jpg", IMREAD_COLOR);
+    Mat orginal = imread("../testImages/testImage3.jpg", IMREAD_COLOR);
     uint wait = 0;
     if (specMode == SpecificationMode::BATCH)
     {
@@ -120,35 +129,35 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
     Specification initSpec;
     switch (specMode)
     {
-        case SpecificationMode::PRE_DEFINED:
-            initSpec.colour = Colour::BLUE;
-            initSpec.shape = Shape::RECTANGLE;
-            break;
-    
-        default:
-            initSpec.colour = Colour::UNKNOWN_COLOUR;
-            initSpec.shape = Shape::UNKNOWN_SHAPE;
-            break;
+    case SpecificationMode::PRE_DEFINED:
+        initSpec.colour = Colour::BLUE;
+        initSpec.shape = Shape::RECTANGLE;
+        break;
+
+    default:
+        initSpec.colour = Colour::UNKNOWN_COLOUR;
+        initSpec.shape = Shape::UNKNOWN_SHAPE;
+        break;
     }
     spec.store(initSpec);
 
     std::thread stream(detectAndDraw, live);
-    
+
     if (specMode == SpecificationMode::INTERACTIVE)
     {
         switch (language)
         {
-            case Language::ENGLISH:
-                std::cout << "Enter: [shape][whitespace][colour]" << std::endl;
-                break;
+        case Language::ENGLISH:
+            std::cout << "Enter: [shape][whitespace][colour]" << std::endl;
+            break;
 
-            case Language::DUTCH:
-                std::cout << "Voer in: [vorm][whitespace][kleur]" << std::endl;
-                break;
-        
-            default:
-                std::cout << "Warning: unsupported language" << std::endl;
-                break;
+        case Language::DUTCH:
+            std::cout << "Voer in: [vorm][whitespace][kleur]" << std::endl;
+            break;
+
+        default:
+            std::cout << "Warning: unsupported language" << std::endl;
+            break;
         }
         while (!exitProgram.load())
         {
@@ -165,11 +174,11 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
             std::vector<std::string> pieces;
 
             std::copy(std::istream_iterator<std::string>(iss),
-                    std::istream_iterator<std::string>(), back_inserter(pieces));
+                      std::istream_iterator<std::string>(), back_inserter(pieces));
             if (pieces.size() >= 2)
             {
                 Specification tempSpec;
-    
+
                 std::string colour = toEnglish(toUpper(pieces[0]), language);
                 std::string shape = toEnglish(toUpper(pieces[1]), language);
                 tempSpec = parseSpecification(colour, shape);
@@ -185,12 +194,13 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
             }
         }
     }
-    else if (specMode == SpecificationMode::BATCH) {
+    else if (specMode == SpecificationMode::BATCH)
+    {
         if (live)
         {
             std::this_thread::sleep_for(2s); // Wait for camara to turn on
         }
-        Parser batch("../batch_english.txt");
+        Parser batch("../batch.txt");
         while (!exitProgram.load())
         {
             Specification currentSpec = batch.nextSpecification();
