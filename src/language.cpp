@@ -7,6 +7,7 @@ const std::map<std::string, std::string> dutchToEnglish = boost::assign::list_of
     ("RECHTHOEK", "RECTANGLE") ("VIERKANT", "SQUARE") ("DRIEHOEK", "TRIANGLE") ("CIRKEL", "CIRCLE")
     ("HALVE_CIRKEL", "HALF_CIRCLE") 
     ("ROOD", "RED") ("GROEN", "GREEN") ("BLAUW", "BLUE") ("GEEL", "YELLOW") ("ZWART", "BLACK") ("ZWART", "BLACK")
+    ("HOUT","WOOD")
     ("ONBEKENDE_VORM", "UNKNOWN_SHAPE") ("ONBEKENDE_KLEUR", "UNKNOWN_COLOUR");
 
 std::map<std::string, std::string> englishToDutch;

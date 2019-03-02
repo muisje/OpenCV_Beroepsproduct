@@ -22,10 +22,10 @@ std::vector<DetailedShape> ColouredShapeFinder::find(cv::Mat image, Specificatio
     cv::Mat preservedImage = hsvImage.clone();
     cv::Mat preservedImage2 = hsvImage.clone();
 
-    cv::bilateralFilter(hsvImage, preservedImage2, 5, 85, 85);
+    // cv::bilateralFilter(hsvImage, preservedImage2, 1, 1, 1);
 
-    preservedImage2 = ColourFilter::preserveColour(preservedImage2, specification.colour);
-    cv::bilateralFilter(preservedImage2, preservedImage, 5, 85, 85);
+    preservedImage2 = ColourFilter::preserveColour(hsvImage, specification.colour);
+    // cv::bilateralFilter(preservedImage2, preservedImage,1, 1, 1);
 
     /*
     cv::Mat canny;
@@ -40,13 +40,14 @@ std::vector<DetailedShape> ColouredShapeFinder::find(cv::Mat image, Specificatio
     cv::morphologyEx(finalImage, finalImage, cv::MORPH_DILATE, element, cv::Point(-1, -1), 1);
     imshow("final", finalImage);
 */
-    preservedImage = ShapeFilter::removeSmallContours(preservedImage);
+    preservedImage = ShapeFilter::removeSmallContours(preservedImage2);
+    imshow("asdf",preservedImage);
     cv::findContours(preservedImage, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
     for (size_t i = 0; i < contours.size(); ++i)
     {
         std::vector<cv::Point> approx;
-        approxPolyDP(contours[i], approx, cv::arcLength(cv::Mat(contours[i]), true) * 0.05, true);
+        approxPolyDP(contours[i], approx, cv::arcLength(cv::Mat(contours[i]), true) * 0.03, true);
         switch (specification.shape)
         {
         case RECTANGLE:
