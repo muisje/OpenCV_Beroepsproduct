@@ -10,17 +10,19 @@
 #define SHAPE_FILTER_H
 
 #include "detailed_shape.h"
-#include "../include/colour.h"
-#include "../include/specification.h"
+#include "colour.h"
+#include "specification.h"
 #include "opencv2/core.hpp"
+
 #define ANGLE_DEVIATION 15
-#define LENGTH_DEVIATION 15
+#define LENGTH_DEVIATION 30
 #define RIGHT_ANGLE 90
 #define STRAIGHT_ANGLE 180
 #define MINIMUM_LENGTH 20
 #define MAXIMUM_DEVIATION 0.1
 #define CIRCUMFERENCE_DEVIATION 10
-#define MINIMUM_CONTOUR_SIZE 1000
+#define MINIMUM_CONTOUR_SIZE 500
+#define RECT_CORNERS 4
 
 /**
  * @class ShapeFilter

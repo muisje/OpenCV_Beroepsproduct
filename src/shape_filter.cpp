@@ -1,7 +1,6 @@
 #include "../include/shape_filter.h"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-#include <iostream>
 
 ShapeFilter::ShapeFilter()
 {
@@ -15,9 +14,9 @@ bool ShapeFilter::isShape(const std::vector<cv::Point> approx, Shape preservedSh
 {
     std::vector<float> lengths;
     bool allAnglesAreStraight = true;
-    for (int i = 0; i < 4; ++i)
+    for (int i = 0; i < RECT_CORNERS; ++i)
     {
-        double angle = calculateAngle(approx[(0 + i) % 4], approx[(1 + i) % 4], approx[(2 + i) % 4]);
+        double angle = calculateAngle(approx[(0 + i) % RECT_CORNERS], approx[(1 + i) % RECT_CORNERS], approx[(2 + i) % RECT_CORNERS]);
 
         if (angle > RIGHT_ANGLE + ANGLE_DEVIATION || angle < RIGHT_ANGLE - ANGLE_DEVIATION)
         {
@@ -32,9 +31,9 @@ bool ShapeFilter::isShape(const std::vector<cv::Point> approx, Shape preservedSh
     lengths.push_back((float)calculateDistance(approx[3], approx[0]));
     lengths.push_back((float)calculateDistance(approx[3], approx[1]));
     lengths.push_back((float)calculateDistance(approx[2], approx[0]));
-    std::sort(lengths.begin(),lengths.end(),std::greater<float>());
+    std::sort(lengths.begin(), lengths.end(), std::greater<float>());
 
-    if (lengths[lengths.size()-1] > MINIMUM_LENGTH)
+    if (lengths[lengths.size() - 1] > MINIMUM_LENGTH)
     {
         if (allAnglesAreStraight && preservedShape == SQUARE)
         {
@@ -58,7 +57,7 @@ bool ShapeFilter::isShape(const std::vector<cv::Point> approx, Shape preservedSh
 bool ShapeFilter::isHalfCircle(std::vector<cv::Point> contour)
 {
     cv::RotatedRect rectangle = cv::minAreaRect(contour);
-    cv::Point2f corners[4];
+    cv::Point2f corners[RECT_CORNERS];
     rectangle.points(corners);
     double height = cv::norm(corners[0] - corners[1]);
     double width = cv::norm(corners[1] - corners[2]);
@@ -75,12 +74,15 @@ bool ShapeFilter::isHalfCircle(std::vector<cv::Point> contour)
         {
             return false;
         }
-        return true;
+        else{
+            return true;
+        }
     }
     else
     {
         return false;
     }
+    return false;
 }
 
 double ShapeFilter::calculateAngle(cv::Point point1, cv::Point point2, cv::Point point3)

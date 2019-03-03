@@ -44,6 +44,7 @@ cv::Mat ColourFilter::preserveColour(cv::Mat inputMat, Colour preservedColour)
         inRange(inputMat, WOOD_COLOR_RANGE.colourLow, WOOD_COLOR_RANGE.colourHigh, finalOutputMat);
         break;
     case UNKNOWN_COLOUR:
+    case NO_COLOUR:
         inRange(inputMat, cv::Scalar(0, 0, 0), cv::Scalar(0, 0, 0), finalOutputMat);
         break;
     }

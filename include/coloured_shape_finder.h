@@ -15,6 +15,12 @@
 
 #include <opencv2/opencv.hpp>
 
+#define MINIMUM_SURFACE 100
+
+/**
+ * @brief class that combines finding shapes and colours to find a coloured shape. 
+ * 
+ */
 class ColouredShapeFinder
 {
 private:

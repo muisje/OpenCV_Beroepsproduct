@@ -15,7 +15,7 @@ std::map<std::string, std::string> englishToDutch;
 std::string toUpper(const std::string & string)
 {
     std::string upperString = string;
-    for (auto & c: upperString) c = toupper(c);
+    for (char & c: upperString) c = static_cast<char>(toupper(c));
     return upperString;
 }
 

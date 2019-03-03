@@ -1,9 +1,9 @@
 # REQUIREMENTS
 
-* [ ] onderstaand op alle foto's
-  * [ ] onderstaand op foto 3
+* [x] onderstaand op alle foto's
+  * [x] onderstaand op foto 3
     * [x] herkennen kleuren
-      * [ ] hout - V
+      * [x] hout - V
     * [x] opervlakte vormen - zie vormen
     * [x] x en y coordinaten middelpunt - M
     * [x] herkennen vormen (incl bestaat niet)
@@ -13,9 +13,9 @@
       * [x] rechthoek - V
       * [x] vierkant - V
       * [x] driehoek - V
-    * [ ] tijd voor (KLOKTIKKEN zie std::clock) - V
-      * [ ] niet herkennen
-      * [ ] wel herkennen
+    * [x] tijd voor (KLOKTIKKEN zie std::clock) - V
+      * [] niet herkennen
+      * [x] wel herkennen
 * [x] uit een bestand lezen (batch fotos) - M
   * [x] spec uit bestand
     * [x] per regel 1 spec
@@ -23,15 +23,15 @@
   * [ ] informatie printen
     * [x] oppervlakte
     * [x] coordinaten
-    * [ ] clock ticks - V
+    * [x] clock ticks - V
   * [x] stdout printen volgens protocol casus
 * [ ] interactief (runtime) - V
   * [x] mbv toetsenbord
   * [x] actief tot exit
-  * [ ] specificatie "[vorm][whitespace][kleur]"
+  * [x] specificatie "[vorm][whitespace][kleur]"
     * [x] uitschrijven "circle red"
     * [x] als het woord niet word herkend bestaat de vorm niet
-    * [ ] in het nederlands - M
+    * [x] in het nederlands - M
 * [ ] Beschrijven: - samen (kan na deadline)
   * [ ] gebruikte algoritmes
     * [ ] berekenbaarheid
@@ -43,7 +43,7 @@
 * [ ] Timing diagram
 * [ ] controle op cppcheck / codan 
   * [ ] foutloos - M
-* [ ] controle valgrind
-* [ ] controle op doxygen - V
+* [x] controle valgrind - V
+* [ ] controle op doxygen - Samen
 * [x] readme bestand (bouwen applicatie cmake)
 * [ ] demonstratie

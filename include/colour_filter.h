@@ -11,7 +11,6 @@
 
 #include "colour.h"
 #include "opencv2/core.hpp"
-#include "../include/colour.h"
 
 /**
  * @class ColourFilter
