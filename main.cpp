@@ -13,8 +13,11 @@
 #include <thread>
 #include <ctime>
 #include <chrono>
+#include <list>
 using namespace cv;
 using namespace std::literals::chrono_literals;
+
+#define COORDINATE_DEVIATION 80
 
 enum SpecificationMode
 {
@@ -81,12 +84,19 @@ void detectAndDrawLive()
 {
     //TODO take avg of multiple frames
     VideoCapture cap;
-    if (!cap.open(1))
+    if (!cap.open(0))
     {
         std::cout << "ERROR: camera not connected!" << std::endl;
         std::cout << "INFO: press enter key to exit." << std::endl;
         exitProgram.store(true);
     }
+
+    const short maxFrames = 3;
+
+    std::list<std::vector<cv::Vec3f>> resultsCircles;
+    std::list<std::vector<DetailedShape>> resultShapes;
+
+
     while (exitProgram.load() == false)
     {
         Mat image;
@@ -94,7 +104,100 @@ void detectAndDrawLive()
         if (image.empty())
             break; // end of video stream
 
-        detectAndDrawOnce(image);
+        Specification specCopy = spec.load();
+        std::clock_t startTime = std::clock();
+        if (specCopy.shape == Shape::CIRCLE)
+        {
+            resultsCircles.push_back(ColouredShapeFinder::findCircles(image, specCopy.colour));
+            if (resultsCircles.size() > maxFrames)
+            {
+                resultsCircles.pop_front();
+                std::vector<cv::Vec3f> resultCircleAvg;
+
+                for (auto & resultCircles : resultsCircles)
+                {
+                    for (auto & circle : resultCircles)
+                    {
+                        if (resultCircleAvg.size() == 0)
+                        {
+                            resultCircleAvg.push_back(circle);   
+                        }
+                        else
+                        {
+                            for (auto & item : resultCircleAvg)
+                            {
+                                if (
+                                    item[0] > (circle[0] - COORDINATE_DEVIATION) && item[0] < (circle[0] + COORDINATE_DEVIATION)
+                                    &&
+                                    item[1] > (circle[1] - COORDINATE_DEVIATION) && item[1] < (circle[1] + COORDINATE_DEVIATION)
+                                )
+                                {
+                                    item[0] = (item[0] + circle[0]) / 2.0;
+                                    item[1] = (item[1] + circle[1]) / 2.0;
+                                    item[2] = (item[2] + circle[2]) / 2.0;
+                                }
+                                else
+                                {
+                                    resultCircleAvg.push_back(circle);
+                                }
+                            }
+                        }
+                    }
+                }
+                std::clock_t endTime = std::clock();
+                Drawer::draw(image, resultCircleAvg, specCopy, endTime - startTime);
+            }
+        }
+        else
+        {
+            resultShapes.push_back(ColouredShapeFinder::find(image, specCopy));
+            if (resultShapes.size() > maxFrames)
+            {
+                resultShapes.pop_front();
+                std::vector<DetailedShape> resultShapeAvg;
+
+                for (auto & resultShapes : resultShapes)
+                {
+                    for (auto & shape : resultShapes)
+                    {
+                        if (resultShapeAvg.size() == 0)
+                        {
+                            resultShapeAvg.push_back(shape);   
+                        }
+                        else
+                        {
+                            for (auto & item : resultShapeAvg)
+                            {
+                                if (
+                                    item.middlepoint.x > (shape.middlepoint.x - COORDINATE_DEVIATION) && item.middlepoint.x < (shape.middlepoint.x + COORDINATE_DEVIATION)
+                                    &&
+                                    item.middlepoint.y > (shape.middlepoint.y - COORDINATE_DEVIATION) && item.middlepoint.y < (shape.middlepoint.y + COORDINATE_DEVIATION)
+                                )
+                                {
+                                    
+                                    item.middlepoint.x = (item.middlepoint.x + shape.middlepoint.x) / 2.0;
+                                    item.middlepoint.y = (item.middlepoint.y + shape.middlepoint.y) / 2.0;
+                                    item.surface = (item.surface + shape.surface) / 2.0;
+
+                                }
+                                else
+                                {
+                                    resultShapeAvg.push_back(shape);
+                                }
+                            }
+                        }
+                    }
+                }
+                std::clock_t endTime = std::clock();
+                Drawer::draw(image, resultShapeAvg, specCopy, endTime - startTime);
+            }
+        }
+
+
+        namedWindow("Display Image", WINDOW_AUTOSIZE); // Create Window
+        imshow("Display Image", image);
+        waitKey(30);
+
     }
     cap.release();
     cv::destroyWindow("Display Image");
@@ -132,8 +235,8 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
     switch (specMode)
     {
     case SpecificationMode::PRE_DEFINED:
-        initSpec.colour = Colour::BLUE;
-        initSpec.shape = Shape::RECTANGLE;
+        initSpec.colour = Colour::YELLOW;
+        initSpec.shape = Shape::CIRCLE;
         break;
 
     default:
