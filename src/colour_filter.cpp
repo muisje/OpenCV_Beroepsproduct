@@ -1,5 +1,4 @@
 #include "../include/colour_filter.h"
-#include "opencv2/highgui/highgui.hpp"
 
 ColourFilter::ColourFilter()
 {

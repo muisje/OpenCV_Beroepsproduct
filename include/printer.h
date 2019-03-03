@@ -15,6 +15,11 @@
 #include "detailed_shape.h"
 #include <opencv2/opencv.hpp>
 
+/**
+ * @brief Class to make printing certain data to the console easier.
+ * 
+ */
+
 class Printer
 {
   private:

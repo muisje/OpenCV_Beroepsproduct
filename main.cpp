@@ -13,7 +13,7 @@ using namespace cv;
 using namespace std::literals::chrono_literals;
 
 Language language = Language::DUTCH;
-SpecificationMode specMode = SpecificationMode::BATCH;
+SpecificationMode specMode = SpecificationMode::INTERACTIVE;
 bool live = false;
 std::atomic<bool> exitProgram(false);
 std::atomic<bool> needToPrint(false);

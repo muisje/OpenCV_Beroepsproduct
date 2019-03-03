@@ -14,9 +14,9 @@ bool ShapeFilter::isShape(const std::vector<cv::Point> approx, Shape preservedSh
 {
     std::vector<float> lengths;
     bool allAnglesAreStraight = true;
-    for (int i = 0; i < 4; ++i)
+    for (int i = 0; i < RECT_CORNERS; ++i)
     {
-        double angle = calculateAngle(approx[(0 + i) % 4], approx[(1 + i) % 4], approx[(2 + i) % 4]);
+        double angle = calculateAngle(approx[(0 + i) % RECT_CORNERS], approx[(1 + i) % RECT_CORNERS], approx[(2 + i) % RECT_CORNERS]);
 
         if (angle > RIGHT_ANGLE + ANGLE_DEVIATION || angle < RIGHT_ANGLE - ANGLE_DEVIATION)
         {
@@ -57,7 +57,7 @@ bool ShapeFilter::isShape(const std::vector<cv::Point> approx, Shape preservedSh
 bool ShapeFilter::isHalfCircle(std::vector<cv::Point> contour)
 {
     cv::RotatedRect rectangle = cv::minAreaRect(contour);
-    cv::Point2f corners[4];
+    cv::Point2f corners[RECT_CORNERS];
     rectangle.points(corners);
     double height = cv::norm(corners[0] - corners[1]);
     double width = cv::norm(corners[1] - corners[2]);
@@ -74,14 +74,8 @@ bool ShapeFilter::isHalfCircle(std::vector<cv::Point> contour)
         {
             return false;
         }
-        else if (
-            ((height / width > 0.35 && height / width < 0.60) || (width / height > 0.40 && width / height < 0.6)))
-        {
+        else{
             return true;
-        }
-        else
-        {
-            return false;
         }
     }
     else

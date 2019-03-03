@@ -15,7 +15,12 @@
 #define TEXT_RED 0
 #define TEXT_GREEN 255
 #define TEXT_BLUE 120
+#define RECT_CORNERS 4
 
+/**
+ * @brief class for drawing on images. 
+ * 
+ */
 class Drawer
 {
 private:
@@ -61,14 +66,30 @@ public:
      * 
      * @details The draw function will handle the drawing of detailed shapes. It will highlight the contour of the shape
      * and also draw information about each shape on the image.
+     * @param image Image on which the shapes and information about shapes will be drawn.
+
      * @param circles
      * @param specification The current specification is needed to determine wether no shape was found
      * because there was no shape or the input was incorrect.
      */
   static void draw(cv::InputOutputArray image, std::vector<cv::Vec3f> circles, Specification specification, std::clock_t duration);
 
+   /**
+    * @brief Function which handles drawing of exceptions
+    * 
+    * @param image Image on which the shapes and information about shapes will be drawn.
+    * @param specification The current specification is needed to determine wether no shape was found
+     * because there was no shape or the input was incorrect.
+    */
   static void draw(cv::InputOutputArray image, Specification specification);
 
+
+   /**
+    * @brief Function which will handle the drawing of amount of ticks it took to proces the image.
+    * 
+    * @param image 
+    * @param duration 
+    */
   static void drawTime(cv::InputOutputArray image, std::clock_t duration);
 };
 

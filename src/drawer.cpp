@@ -30,13 +30,13 @@ void Drawer::draw(cv::InputOutputArray image, std::vector<DetailedShape> detaile
     for (auto shape : detailedShapes)
     {
         cv::RotatedRect rect = cv::minAreaRect(shape.contour);
-        cv::Point2f vertices[4];
+        cv::Point2f vertices[RECT_CORNERS];
         rect.points(vertices);
-        for (int i = 0; i < 4; i++)
-            line(image, vertices[i], vertices[(i + 1) % 4], cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE));
+        for (int i = 0; i < RECT_CORNERS; i++)
+            line(image, vertices[i], vertices[(i + 1) % RECT_CORNERS], cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE));
         // cv::drawContours(image, std::vector<std::vector<cv::Point> >(1, contour), -1, cv::Scalar(255, 255, 0), 1, 1);
         cv::circle(image, shape.middlepoint, 1, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), 3); // center
-        drawInfo(image, shape.middlepoint, shape.surface, 000);
+        drawInfo(image, shape.middlepoint, shape.surface, 0);
     }
         drawTime(image, duration);
 

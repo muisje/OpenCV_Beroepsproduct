@@ -53,7 +53,7 @@ std::vector<DetailedShape> ColouredShapeFinder::find(cv::Mat image, Specificatio
             if (approx.size() == 3 && !ShapeFilter::isHalfCircle(contours[i])) // When an halfCircle is to small approxPolyDP in rare occasions only recognizes 3 "corners"
             {
                 DetailedShape shape = DetailedShape(contours[i], specification);
-                if (shape.surface > 100)
+                if (shape.surface > MINIMUM_SURFACE)
                 {
                     detailedShapes.push_back(shape);
                 }
@@ -63,7 +63,7 @@ std::vector<DetailedShape> ColouredShapeFinder::find(cv::Mat image, Specificatio
             if (ShapeFilter::isHalfCircle(contours[i]))
             {
                 DetailedShape shape = DetailedShape(contours[i], specification);
-                if (shape.surface > 100)
+                if (shape.surface > MINIMUM_SURFACE)
                 {
                     detailedShapes.push_back(shape);
                 }

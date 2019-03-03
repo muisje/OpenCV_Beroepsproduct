@@ -12,9 +12,10 @@
 #include "language.h"
 #include "specification.h"
 #include <fstream>
-#include <sstream>
-#include <string>
-
+/**
+ * @brief Class made to easily parse batch files containing specifications
+ * 
+ */
 class BatchParser
 {
 private:

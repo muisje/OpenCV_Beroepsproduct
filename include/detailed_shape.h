@@ -15,7 +15,7 @@
 #include "../include/specification.h"
 
 /**
- * @class Shape
+ * @class DetailedShape
  *
  * @brief Class to store properties of a shape in
  * 
