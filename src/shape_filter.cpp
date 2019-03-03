@@ -85,6 +85,37 @@ bool ShapeFilter::isHalfCircle(std::vector<cv::Point> contour)
     return false;
 }
 
+bool ShapeFilter::isCircle(std::vector<cv::Point> contour)
+{
+    cv::RotatedRect rectangle = cv::minAreaRect(contour);
+    cv::Point2f corners[RECT_CORNERS];
+    rectangle.points(corners);
+    double height = cv::norm(corners[0] - corners[1]);
+    double width = cv::norm(corners[1] - corners[2]);
+    double area = height * width;
+    double contourArea = cv::contourArea(contour);
+
+    if (contourArea / area > M_PI / 4 - MAXIMUM_DEVIATION && contourArea / area < M_PI / 4)
+    {
+        //If the width and height of the minAreaRect is close to zero it is a square.
+        //Since the previous if statement is both true with circles as half circles
+        //circles need to be filtered out. If the contour is a circle the minAreaRect
+        //is a rectangle of which the height as length are close to eachother.
+        if (abs(height - width) > LENGTH_DEVIATION)
+        {
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+    return false;
+}
+
 double ShapeFilter::calculateAngle(cv::Point point1, cv::Point point2, cv::Point point3)
 {
     double angle1 = std::atan2(point1.x - point2.x, point1.y - point2.y);

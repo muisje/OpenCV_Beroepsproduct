@@ -61,6 +61,7 @@ public:
    * @return false False is being returned if the supplied contour is not a half circle
    */
   static bool isHalfCircle(std::vector<cv::Point> contour);
+  static bool isCircle(std::vector<cv::Point> contour);
 
   /**
    * @brief This function will remove all contours which are of an insufficient surface.

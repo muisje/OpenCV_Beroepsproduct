@@ -39,8 +39,8 @@ enum SpecificationMode
  */
 struct Specification
 {
-    Shape shape;
-    Colour colour;
+    Shape shape = Shape::NO_SHAPE;
+    Colour colour = Colour::NO_COLOUR;
 };
 
 bool operator!=(const Specification& lhs, const Specification& rhs);
