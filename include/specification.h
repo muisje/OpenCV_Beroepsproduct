@@ -14,6 +14,17 @@
 #include "colour.h"
 #include "language.h"
 
+
+/**
+ * @brief Enum to define specification mode.
+ * 
+ */
+enum SpecificationMode
+{
+    INTERACTIVE,
+    BATCH,
+    PRE_DEFINED
+};
 /**
  * @struct Specification
  *
@@ -26,8 +37,6 @@
  * @date 13-2-2019
  * 
  */
-
-
 struct Specification
 {
     Shape shape;

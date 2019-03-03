@@ -17,27 +17,41 @@
 
 class Printer
 {
-private:
+  private:
     Printer(/* args */);
     ~Printer();
-public:
+
+  public:
     /**
      * @brief prints the text of not found to console
      * 
      */
-    static void printNotFound();
+    static void printNotFound(std::clock_t duration);
     /**
      * @brief prints the data of circles to console
      * 
      * @param circles to be printed
      */
-    static void print(std::vector<cv::Vec3f>& circles, std::clock_t duration);
+    static void print(std::vector<cv::Vec3f> &circles, std::clock_t duration);
     /**
      * @brief every other shape then circle to be printed to console
      * 
      * @param shapes to be printed
      */
-    static void print(std::vector<DetailedShape>& shapes, std::clock_t duration);
+    static void print(std::vector<DetailedShape> &shapes, std::clock_t duration);
+
+    /**
+     * @brief 
+     * 
+     * @param batchNumber 
+     */
+    static void printUnknown(int batchNumber);
+
+    /**
+     * @brief 
+     * 
+     */
+    static void print(std::string);
 };
 
 #endif

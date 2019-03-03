@@ -2,7 +2,6 @@
 #include <boost/assign/list_of.hpp> // for 'map_list_of()'
 #include <boost/assert.hpp> 
 #include <map>
-#include <iostream>
 
 const std::map<std::string, Shape> stringToShapeEnglish = boost::assign::list_of<std::pair<std::string, Shape> > 
     ("RECTANGLE", Shape::RECTANGLE) ("TRIANGLE", Shape::TRIANGLE) ("HALF_CIRCLE", Shape::HALF_CIRCLE) 

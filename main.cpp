@@ -5,23 +5,12 @@
 #include "include/batch_parser.h"
 #include "include/specification.h"
 #include <opencv2/opencv.hpp>
-#include <stdio.h>
-#include <sstream>
-#include <iostream>
 #include <iterator>
 #include <atomic>
 #include <thread>
-#include <ctime>
 #include <chrono>
 using namespace cv;
 using namespace std::literals::chrono_literals;
-
-enum SpecificationMode
-{
-    INTERACTIVE,
-    BATCH,
-    PRE_DEFINED
-};
 
 Language language = Language::DUTCH;
 SpecificationMode specMode = SpecificationMode::BATCH;
@@ -30,7 +19,7 @@ std::atomic<bool> exitProgram(false);
 std::atomic<bool> needToPrint(false);
 std::atomic<Specification> spec;
 
-void detectAndDrawOnce(cv::Mat image, uint wait = 1)
+void detectAndDrawOnce(cv::Mat image)
 {
     Specification specCopy = spec.load();
     if (specCopy.shape == Shape::CIRCLE)
@@ -40,10 +29,10 @@ void detectAndDrawOnce(cv::Mat image, uint wait = 1)
         std::clock_t endTime = std::clock();
         if (needToPrint.load())
         {
-            std::cout << specificationToString(specCopy, language) << std::endl;
+            Printer::print(specificationToString(specCopy, language));
             if (circles.size() == 0)
             {
-                Printer::printNotFound();
+                Printer::printNotFound(endTime - startTime);
             }
             Printer::print(circles, endTime - startTime);
             needToPrint.store(false);
@@ -59,10 +48,10 @@ void detectAndDrawOnce(cv::Mat image, uint wait = 1)
 
         if (needToPrint.load())
         {
-            std::cout << specificationToString(specCopy, language) << std::endl;
+            Printer::print(specificationToString(specCopy, language));
             if (shapes.size() == 0)
             {
-                Printer::printNotFound();
+                Printer::printNotFound(endTime - startTime);
             }
             else
             {
@@ -83,8 +72,8 @@ void detectAndDrawLive()
     VideoCapture cap;
     if (!cap.open(1))
     {
-        std::cout << "ERROR: camera not connected!" << std::endl;
-        std::cout << "INFO: press enter key to exit." << std::endl;
+        Printer::print("ERROR: camera not connected!");
+        Printer::print("INFO: press enter key to exit.");
         exitProgram.store(true);
     }
     while (exitProgram.load() == false)
@@ -103,14 +92,9 @@ void detectAndDrawLive()
 void detectAndDrawStatic()
 {
     Mat orginal = imread("../testImages/testImage3.jpg", IMREAD_COLOR);
-    uint wait = 0;
-    if (specMode == SpecificationMode::BATCH)
-    {
-        wait = 30;
-    }
     while (exitProgram.load() == false)
     {
-        detectAndDrawOnce(orginal.clone(), wait);
+        detectAndDrawOnce(orginal.clone());
     }
 }
 
@@ -150,15 +134,15 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
         switch (language)
         {
         case Language::ENGLISH:
-            std::cout << "Enter: [shape][whitespace][colour]" << std::endl;
+            Printer::print("Enter: [shape][whitespace][colour]");
             break;
 
         case Language::DUTCH:
-            std::cout << "Voer in: [vorm][whitespace][kleur]" << std::endl;
+            Printer::print("Voer in: [vorm][whitespace][kleur]");
             break;
 
         default:
-            std::cout << "Warning: unsupported language" << std::endl;
+            Printer::print("Warning: unsupported language");
             break;
         }
         while (!exitProgram.load())
@@ -187,12 +171,12 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
                 spec.store(tempSpec);
                 if (tempSpec.colour == UNKNOWN_COLOUR || tempSpec.shape == UNKNOWN_SHAPE)
                 {
-                    std::cout << "Unknown colour or shape!" << std::endl;
+                    Printer::print("Unknown colour or shape!");
                 }
             }
             else
             {
-                std::cout << "Unknown colour or shape!" << std::endl;
+                Printer::print("Unknown colour or shape!");
             }
         }
     }
@@ -211,22 +195,29 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
         {
             batchFile = "../batch_english.txt";
         }
-        
-        BatchParser batch(batchFile, language);
 
+        BatchParser batch(batchFile, language);
+        int batchNumber = 0;
         while (!exitProgram.load())
         {
             Specification currentSpec = batch.nextSpecification();
+            ++batchNumber;
+
             if (currentSpec.shape == Shape::NO_SHAPE || currentSpec.colour == Colour::NO_COLOUR)
             {
                 exitProgram.store(true);
+            }
+            else if (
+                currentSpec.shape == Shape::UNKNOWN_SHAPE || currentSpec.colour == Colour::UNKNOWN_COLOUR)
+            {
+                Printer::printUnknown(batchNumber);
             }
             else
             {
                 spec.store(currentSpec);
                 needToPrint.store(true);
+                std::this_thread::sleep_for(1000ms);
             }
-            std::this_thread::sleep_for(1000ms);
         }
     }
     stream.join();

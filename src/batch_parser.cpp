@@ -1,5 +1,4 @@
 #include "../include/batch_parser.h"
-#include <iostream>
 
 #define DELIMITER "#"
 

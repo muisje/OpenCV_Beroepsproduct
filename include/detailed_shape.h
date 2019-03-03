@@ -1,7 +1,7 @@
 /**
  * @file detailed_shape.h
  * @author Martijn Vogelaar
- * @brief class for storing detialed information about a shape
+ * @brief class for storing detailed information about a shape
  * @version 0.1
  * @date 2019-03-02
  * 

@@ -1,6 +1,5 @@
 #include "../include/detailed_shape.h"
 #include <opencv/cv.hpp>
-#include <iostream>
 DetailedShape::DetailedShape(std::vector<cv::Point> contour, Specification specification):contour(contour), specification(specification)
 {
     cv::Moments moment = cv::moments(contour, false);

@@ -14,7 +14,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <boost/optional.hpp>
 
 class BatchParser
 {

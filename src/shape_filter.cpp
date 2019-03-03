@@ -1,7 +1,6 @@
 #include "../include/shape_filter.h"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-#include <iostream>
 
 ShapeFilter::ShapeFilter()
 {
@@ -32,9 +31,9 @@ bool ShapeFilter::isShape(const std::vector<cv::Point> approx, Shape preservedSh
     lengths.push_back((float)calculateDistance(approx[3], approx[0]));
     lengths.push_back((float)calculateDistance(approx[3], approx[1]));
     lengths.push_back((float)calculateDistance(approx[2], approx[0]));
-    std::sort(lengths.begin(),lengths.end(),std::greater<float>());
+    std::sort(lengths.begin(), lengths.end(), std::greater<float>());
 
-    if (lengths[lengths.size()-1] > MINIMUM_LENGTH)
+    if (lengths[lengths.size() - 1] > MINIMUM_LENGTH)
     {
         if (allAnglesAreStraight && preservedShape == SQUARE)
         {
@@ -75,12 +74,21 @@ bool ShapeFilter::isHalfCircle(std::vector<cv::Point> contour)
         {
             return false;
         }
-        return true;
+        else if (
+            ((height / width > 0.35 && height / width < 0.60) || (width / height > 0.40 && width / height < 0.6)))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     else
     {
         return false;
     }
+    return false;
 }
 
 double ShapeFilter::calculateAngle(cv::Point point1, cv::Point point2, cv::Point point3)

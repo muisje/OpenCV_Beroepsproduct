@@ -5,8 +5,8 @@ void Printer::print(std::vector<cv::Vec3f>& circles, std::clock_t duration)
 {
     for (size_t current_circle = 0; current_circle < circles.size(); ++current_circle)
     {
-        cv::Point center(std::round(circles[current_circle][0]), std::round(circles[current_circle][1]));
-        int radius = std::round(circles[current_circle][2]);
+        cv::Point center(static_cast<int>(std::round(circles[current_circle][0])), static_cast<int>(std::round(circles[current_circle][1])));
+        int radius = static_cast<int>(std::round(circles[current_circle][2]));
 
         double area = M_PI * pow(radius, 2);
         std::cout << "(" << center.x << ", " << center.y << ") " << area << " px^2 " << std::to_string(duration) << " clock ticks" << std::endl;
@@ -23,6 +23,15 @@ void Printer::print(std::vector<DetailedShape>& shapes, std::clock_t duration)
     std::cout << std::endl;
 }
 
-void Printer::printNotFound()
+void Printer::printNotFound(std::clock_t duration)
 {
+    std::cout << "Shape not found, it took: " << duration << " ticks" << std::endl << std::endl;;
+}
+
+void Printer::printUnknown(int batchNumber){
+    std::cout << "Specification number: " << std::to_string(batchNumber) << " is invalid!" << std::endl << std::endl;
+}
+
+void Printer::print(std::string input){
+    std::cout << input << std::endl;
 }
