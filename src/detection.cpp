@@ -54,11 +54,11 @@ void Detection::detectAndDrawOnce(cv::Mat image, std::atomic<Specification>* spe
     waitKey(30);
 }
 
-void Detection::detectAndDrawLive(std::atomic<bool>* exitProgram,std::atomic<Specification>* spec)
+void Detection::detectAndDrawLive(std::atomic<bool>* exitProgram,std::atomic<Specification>* spec, short camera)
 {
     //TODO take avg of multiple frames
     VideoCapture cap;
-    if (!cap.open(0))
+    if (!cap.open(camera))
     {
         Printer::print("ERROR: camera not connected!");
         Printer::print("INFO: press enter key to exit.");
@@ -186,23 +186,11 @@ void Detection::detectAndDrawLive(std::atomic<bool>* exitProgram,std::atomic<Spe
     cv::destroyWindow("Display Image");
 }
 
-void Detection::detectAndDrawStatic(std::atomic<bool>* exitProgram, std::atomic<Specification>* spec, std::atomic<bool>* needToPrint, Language language)
+void Detection::detectAndDrawStatic(std::atomic<bool>* exitProgram, std::atomic<Specification>* spec, std::atomic<bool>* needToPrint, const std::string & imageFileName, Language language)
 {
-    Mat orginal = imread("../testImages/testImage3.jpg", IMREAD_COLOR);
+    Mat orginal = imread(imageFileName, IMREAD_COLOR);
     while (exitProgram->load() == false)
     {
         detectAndDrawOnce(orginal.clone(),spec,needToPrint,language);
-    }
-}
-
-void Detection::detectAndDraw(bool live,std::atomic<bool>* exitProgram, std::atomic<Specification>* spec, std::atomic<bool>* needToPrint, Language language)
-{
-    if (live)
-    {
-        detectAndDrawLive(exitProgram,spec);
-    }
-    else
-    {
-        detectAndDrawStatic(exitProgram,spec,needToPrint,language);
     }
 }
