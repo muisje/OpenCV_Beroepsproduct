@@ -18,7 +18,7 @@ using namespace std::literals::chrono_literals;
 
 Language language = Language::DUTCH;
 SpecificationMode specMode = SpecificationMode::INTERACTIVE;
-bool live = false;
+bool live = true;
 std::atomic<bool> exitProgram(false);
 std::atomic<bool> needToPrint(false);
 std::atomic<Specification> spec;
@@ -164,10 +164,19 @@ void detectAndDrawLive()
                                     item.middlepoint.y > (shape.middlepoint.y - COORDINATE_DEVIATION) && item.middlepoint.y < (shape.middlepoint.y + COORDINATE_DEVIATION)
                                 )
                                 {
-                                    
-                                    item.middlepoint.x = boost::lexical_cast<int>( (item.middlepoint.x + shape.middlepoint.x) / 2.0 );
-                                    item.middlepoint.y = boost::lexical_cast<int>( (item.middlepoint.y + shape.middlepoint.y) / 2.0 );
+                                    try
+                                    {
+                                        item.middlepoint.y = boost::lexical_cast<int>( (item.middlepoint.y + shape.middlepoint.y) / 2.0);
+                                        item.middlepoint.x = boost::lexical_cast<int>( (item.middlepoint.x + shape.middlepoint.x) / 2.0);
+                                        }
+                                    catch(const std::exception& e)
+                                    {
+                                        item.middlepoint.y = int( (item.middlepoint.y + shape.middlepoint.y) / 2.0);
+                                        item.middlepoint.x = int( (item.middlepoint.x + shape.middlepoint.x) / 2.0);
+                                        // std::cerr << e.what() << '\n';
+                                    }
                                     item.surface = (item.surface + shape.surface) / 2.0;
+                                    
 
                                 }
                                 else
