@@ -102,9 +102,7 @@ std::vector<cv::Vec3f> ColouredShapeFinder::findCircles(cv::Mat image, enum ::Co
     cvtColor(dst_combined, dst_combined, cv::COLOR_BGR2GRAY);
     subtract(foundCircles, dst_combined, foundCircles);
 
-    cv::GaussianBlur(foundCircles, foundCircles, cv::Size(3, 3), 3, 3); // perfect for wood
-    //TODO find blur for surface of blocks (so its flat, smooth and solid)
-    // cv::GaussianBlur(foundCircles, foundCircles, cv::Size(5, 5), 3, 3); // perfect for yellow
+    cv::GaussianBlur(foundCircles, foundCircles, cv::Size(5, 5), 3, 3); // perfect 
 
     std::vector<cv::Vec3f> circles;
     cv::HoughCircles(foundCircles, circles, CV_HOUGH_GRADIENT, 1, foundCircles.rows / 8, 100, 30, 15, 100);
