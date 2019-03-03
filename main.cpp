@@ -17,8 +17,8 @@ using namespace std::literals::chrono_literals;
 #define COORDINATE_DEVIATION 80
 
 Language language = Language::DUTCH;
-SpecificationMode specMode = SpecificationMode::INTERACTIVE;
-bool live = true;
+SpecificationMode specMode = SpecificationMode::BATCH;
+bool live = false;
 std::atomic<bool> exitProgram(false);
 std::atomic<bool> needToPrint(false);
 std::atomic<Specification> spec;
@@ -178,8 +178,7 @@ void detectAndDrawLive()
                                     item.surface = (item.surface + shape.surface) / 2.0;
                                     
 
-                                }item.middlepoint.y = boost::lexical_cast<int>( (item.middlepoint.y + shape.middlepoint.y) / 2.0);
-                                        item.middlepoint.x = boost::lexical_cast<int>( (item.middlepoint.x + shape.middlepoint.x) / 2.0);
+                                }
                                 else
                                 {
                                     resultShapeAvg.push_back(shape);

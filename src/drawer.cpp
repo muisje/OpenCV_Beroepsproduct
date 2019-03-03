@@ -1,5 +1,8 @@
 #include "../include/drawer.h"
+#include <math.h>       /* sqrt */
+#include <boost/lexical_cast.hpp>
 #include <vector>
+
 
 Drawer::Drawer()
 {
@@ -33,10 +36,11 @@ void Drawer::draw(cv::InputOutputArray image, std::vector<DetailedShape> detaile
         cv::Point2f vertices[RECT_CORNERS];
         rect.points(vertices);
         for (int i = 0; i < RECT_CORNERS; i++)
-            line(image, vertices[i], vertices[(i + 1) % RECT_CORNERS], cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE));
-        // cv::drawContours(image, std::vector<std::vector<cv::Point> >(1, contour), -1, cv::Scalar(255, 255, 0), 1, 1);
-        cv::circle(image, shape.middlepoint, 1, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), 3); // center
-        drawInfo(image, shape.middlepoint, shape.surface, 0);
+            line(image, vertices[i], vertices[(i + 1) % RECT_CORNERS], cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), LINE_THICKNESS);
+        
+        double yOffset = sqrt(shape.surface);
+        cv::circle(image, shape.middlepoint, 1, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), MIDDLE_POINT_SIZE); // center
+        drawInfo(image, shape.middlepoint, shape.surface, int(yOffset));
     }
         drawTime(image, duration);
 
@@ -56,9 +60,9 @@ void Drawer::draw(cv::InputOutputArray image, std::vector<cv::Vec3f> circles, Sp
             int radius = static_cast<int>(std::round(circles[current_circle][2]));
 
             double area = M_PI * pow(radius, 2);
-            cv::circle(image, center, 1, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), 3);      // center
-            cv::circle(image, center, radius, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), 3); // contour
-            drawInfo(image, center, area, radius + 6);
+            cv::circle(image, center, 1, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), MIDDLE_POINT_SIZE);      // center
+            cv::circle(image, center, radius, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), LINE_THICKNESS); // contour
+            drawInfo(image, center, area, radius + 10);
         }
     }
     drawTime(image, duration);
@@ -78,12 +82,12 @@ void Drawer::drawInfo(cv::InputOutputArray image, cv::Point center, double area,
     std::string text = textCenter + " " + textArea;
 
     cv::Size textSize = cv::getTextSize(text, CV_FONT_HERSHEY_PLAIN,
-                                        1, 1, 0);
-    putText(image, text, cv::Point(center.x - (textSize.width / 2), center.y - yOffset), CV_FONT_NORMAL, 0.5, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), 1);
+                                        FONT_SCALE, TEXT_THICKNESS, 0);
+    putText(image, text, cv::Point(center.x - textSize.width, center.y - yOffset), CV_FONT_NORMAL, FONT_SCALE, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), TEXT_THICKNESS);
 }
 
 void Drawer::drawTime(cv::InputOutputArray image, std::clock_t duration)
 {
     std::string text = std::to_string(duration) + "clock ticks";
-    putText(image, text, cv::Point(10, 30), CV_FONT_NORMAL, 1.0, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), 1);
+    putText(image, text, cv::Point(10, 30), CV_FONT_NORMAL, 1.0, cv::Scalar(TEXT_RED, TEXT_GREEN, TEXT_BLUE), TEXT_THICKNESS);
 }

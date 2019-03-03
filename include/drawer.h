@@ -13,9 +13,13 @@
 #include "detailed_shape.h"
 #include <opencv2/opencv.hpp>
 #define TEXT_RED 0
-#define TEXT_GREEN 255
-#define TEXT_BLUE 120
+#define TEXT_GREEN 0
+#define TEXT_BLUE 0
 #define RECT_CORNERS 4
+#define FONT_SCALE 0.8
+#define TEXT_THICKNESS 2
+#define LINE_THICKNESS 2
+#define MIDDLE_POINT_SIZE 5
 
 /**
  * @brief class for drawing on images. 
