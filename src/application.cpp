@@ -27,13 +27,13 @@ Application::~Application()
 void Application::initLiveCamera(short camera)
 {
     //TODO add language
-    stream = new std::thread(Detection::detectAndDrawLive, &exitProgram, &specification, camera);
+    stream = new std::thread(Detection::detectAndDrawLive, &exitProgram, &specification, &needToPrint, language, camera);
     std::this_thread::sleep_for(1s); // Wait for camara to turn on
 }
 
 void Application::initStaticImage(const std::string & fileName)
 {
-    stream = new std::thread(Detection::detectAndDrawStatic, &exitProgram, &specification , &needToPrint, fileName, language);
+    stream = new std::thread(Detection::detectAndDrawStatic, &exitProgram, &specification, &needToPrint, fileName, language);
 }
 
 void Application::initInteractiveMode()

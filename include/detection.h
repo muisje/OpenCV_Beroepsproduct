@@ -41,7 +41,7 @@ public:
    * @param spec the specification which to detect.
    * @param camera which is used for getting the live images
    */
-  static void detectAndDrawLive(std::atomic<bool>* exitProgram,std::atomic<Specification>* spec, short camera);
+  static void detectAndDrawLive(std::atomic<bool>* exitProgram,std::atomic<Specification>* spec, std::atomic<bool>* needToPrint, Language language, short camera);
 
   /**
    * @brief detects and draws on a static image from a file

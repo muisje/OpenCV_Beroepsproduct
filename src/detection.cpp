@@ -54,7 +54,7 @@ void Detection::detectAndDrawOnce(cv::Mat image, std::atomic<Specification>* spe
     waitKey(30);
 }
 
-void Detection::detectAndDrawLive(std::atomic<bool>* exitProgram,std::atomic<Specification>* spec, short camera)
+void Detection::detectAndDrawLive(std::atomic<bool>* exitProgram,std::atomic<Specification>* spec, std::atomic<bool>* needToPrint, Language language, short camera)
 {
     //TODO take avg of multiple frames
     VideoCapture cap;
@@ -119,6 +119,16 @@ void Detection::detectAndDrawLive(std::atomic<bool>* exitProgram,std::atomic<Spe
                     }
                 }
                 std::clock_t endTime = std::clock();
+                if (needToPrint->load())
+                {
+                    Printer::print(specificationToString(specCopy, language));
+                    if (resultCircleAvg.size() == 0)
+                    {
+                        Printer::printNotFound(endTime - startTime);
+                    }
+                    Printer::print(resultCircleAvg, endTime - startTime);
+                    needToPrint->store(false);
+                }
                 Drawer::draw(image, resultCircleAvg, specCopy, endTime - startTime);
             }
         }
@@ -172,6 +182,19 @@ void Detection::detectAndDrawLive(std::atomic<bool>* exitProgram,std::atomic<Spe
                     }
                 }
                 std::clock_t endTime = std::clock();
+                if (needToPrint->load())
+                {
+                    Printer::print(specificationToString(specCopy, language));
+                    if (resultShapeAvg.size() == 0)
+                    {
+                        Printer::printNotFound(endTime - startTime);
+                    }
+                    else
+                    {
+                        Printer::print(resultShapeAvg, endTime - startTime);
+                    }
+                    needToPrint->store(false);
+                }
                 Drawer::draw(image, resultShapeAvg, specCopy, endTime - startTime);
             }
         }
