@@ -14,13 +14,13 @@
       * [x] vierkant - V
       * [x] driehoek - V
     * [x] tijd voor (KLOKTIKKEN zie std::clock) - V
-      * [] niet herkennen
+      * [x] niet herkennen
       * [x] wel herkennen
 * [x] uit een bestand lezen (batch fotos) - M
   * [x] spec uit bestand
     * [x] per regel 1 spec
     * [x] text na een "#"/"hekkie" is commentaar
-  * [ ] informatie printen
+  * [x] informatie printen
     * [x] oppervlakte
     * [x] coordinaten
     * [x] clock ticks - V
@@ -32,18 +32,18 @@
     * [x] uitschrijven "circle red"
     * [x] als het woord niet word herkend bestaat de vorm niet
     * [x] in het nederlands - M
-* [ ] Beschrijven: - samen (kan na deadline)
+* [ ] na deadline
+  * [ ] demonstratie
+  * [ ] Timing diagram
   * [ ] gebruikte algoritmes
     * [ ] berekenbaarheid
     * [ ] complexiteit
 * [x] webcam - M
-  * [ ] evt meerdere frames gebruiken? - M
+  * [z] evt meerdere frames gebruiken? - M
   * [ ] calibratie webcam (middelware?) - samen
-* [ ] compileren zonder errors en warnings - M
-* [ ] Timing diagram
-* [ ] controle op cppcheck / codan 
-  * [ ] foutloos - M
+* [x] compileren zonder errors en warnings - M
+* [x] controle op cppcheck / codan 
+  * [x] foutloos - M
 * [x] controle valgrind - V
-* [ ] controle op doxygen - Samen
+* [x] controle op doxygen - Samen
 * [x] readme bestand (bouwen applicatie cmake)
-* [ ] demonstratie

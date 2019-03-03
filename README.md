@@ -7,10 +7,11 @@ OpenCV Beroepsproduct WOR_ROBOTS
 
 Make sure these are installed first:
 
-    cmake - sudo apt-get install cmake
+    cmake 2.8 and above
     opencv 3.2.0 and above
     cppcheck 1.86 and above
-
+    boost
+    c++ 14
 
 ### Compile
 
@@ -19,13 +20,17 @@ From root:
 ```
 mkdir build
 cd build
-cmake ../src
+cmake ../
 make
 ```
 
-### Runnen
+### Run
 
-**todo**
+from build
+
+```
+.\Beroepsproduct
+```
 
 ## Docs
 
