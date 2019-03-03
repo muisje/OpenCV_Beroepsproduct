@@ -5,6 +5,7 @@
 #include "include/batch_parser.h"
 #include "include/specification.h"
 #include <opencv2/opencv.hpp>
+#include <boost/lexical_cast.hpp>
 #include <iterator>
 #include <atomic>
 #include <thread>
@@ -121,9 +122,9 @@ void detectAndDrawLive()
                                     item[1] > (circle[1] - COORDINATE_DEVIATION) && item[1] < (circle[1] + COORDINATE_DEVIATION)
                                 )
                                 {
-                                    item[0] = (item[0] + circle[0]) / 2.0;
-                                    item[1] = (item[1] + circle[1]) / 2.0;
-                                    item[2] = (item[2] + circle[2]) / 2.0;
+                                    item[0] = boost::lexical_cast<float>( (item[0] + circle[0]) / 2.0 );
+                                    item[1] = boost::lexical_cast<float>( (item[1] + circle[1]) / 2.0 );
+                                    item[2] = boost::lexical_cast<float>( (item[2] + circle[2]) / 2.0 );
                                 }
                                 else
                                 {
@@ -164,8 +165,8 @@ void detectAndDrawLive()
                                 )
                                 {
                                     
-                                    item.middlepoint.x = (item.middlepoint.x + shape.middlepoint.x) / 2.0;
-                                    item.middlepoint.y = (item.middlepoint.y + shape.middlepoint.y) / 2.0;
+                                    item.middlepoint.x = boost::lexical_cast<int>( (item.middlepoint.x + shape.middlepoint.x) / 2.0 );
+                                    item.middlepoint.y = boost::lexical_cast<int>( (item.middlepoint.y + shape.middlepoint.y) / 2.0 );
                                     item.surface = (item.surface + shape.surface) / 2.0;
 
                                 }
