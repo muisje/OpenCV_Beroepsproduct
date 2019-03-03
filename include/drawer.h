@@ -12,9 +12,9 @@
 
 #include "detailed_shape.h"
 #include <opencv2/opencv.hpp>
-#define TEXT_RED 0
+#define TEXT_RED 255
 #define TEXT_GREEN 0
-#define TEXT_BLUE 0
+#define TEXT_BLUE 125
 #define RECT_CORNERS 4
 #define FONT_SCALE 0.8
 #define TEXT_THICKNESS 2

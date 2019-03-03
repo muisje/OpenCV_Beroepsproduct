@@ -6,7 +6,7 @@ int main(/*int argc, char **argv*/) // Warning unused parameter
     // app.initLiveCamera(0);
     app.initStaticImage("../testImages/testImage3.jpg");
     // app.runInteractiveMode();
-    // app.runBatchMode("../batch.txt");
-    app.setSpecification({Shape::RECTANGLE, Colour::BLUE});
+    app.runBatchMode("../batch.txt");
+    // app.setSpecification({Shape::RECTANGLE, Colour::BLUE});
     return 0;
 }
