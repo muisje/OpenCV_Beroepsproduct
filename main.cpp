@@ -178,7 +178,8 @@ void detectAndDrawLive()
                                     item.surface = (item.surface + shape.surface) / 2.0;
                                     
 
-                                }
+                                }item.middlepoint.y = boost::lexical_cast<int>( (item.middlepoint.y + shape.middlepoint.y) / 2.0);
+                                        item.middlepoint.x = boost::lexical_cast<int>( (item.middlepoint.x + shape.middlepoint.x) / 2.0);
                                 else
                                 {
                                     resultShapeAvg.push_back(shape);
